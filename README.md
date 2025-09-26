@@ -13,15 +13,11 @@
 
 ## 💬 About the Project
 
-**React Native Messenger** is a modern cross-platform messaging app built with [Expo](https://expo.dev/), [React Native](https://reactnative.dev/), [TailwindCSS](https://tailwindcss.com/), and [React Navigation](https://reactnavigation.org/).  
-The app features a beautiful UI and supports:
+**React Native Messenger** is a modern cross-platform messaging app built with [Expo](https://expo.dev/), [React Native](https://reactnative.dev/), [TailwindCSS](https://tailwindcss.com/), and [TypeScript](https://www.typescriptlang.org/).
 
-- **User Registration:** Sign up with name, phone number, and country.
-- **Profile Image Selection:** Upload your own photo or pick from avatars.
-- **Theme Customization:** Toggle between light and dark themes.
-- **Contact Integration:** Find friends using your device contacts (privacy respected).
-- **Animated Splash Screen:** Sleek entry animation.
-- **Under Active Development!** More messaging features coming soon.
+> 🚧 **This project is actively under development.**
+> Now includes backend integration for real-time messaging!  
+> The backend uses a server that can be exposed via ngrok/NGROCK for testing and development.
 
 ---
 
@@ -32,6 +28,8 @@ The app features a beautiful UI and supports:
 - [Yarn](https://yarnpkg.com/) or [npm](https://www.npmjs.com/)
 - Smartphone or emulator (iOS/Android)
 - (Optional) [VS Code](https://code.visualstudio.com/) for development
+- **(New)** [ngrok](https://ngrok.com/) or NGROCK for exposing backend server
+- **(New)** Hibernate & SQL (if using Java backend)
 
 ---
 
@@ -55,7 +53,50 @@ npm start
 # 4️⃣ Run the app on your device or emulator
 # - Scan the QR code in Expo Go (iOS/Android)
 # - Or launch on your simulator/emulator from the Expo dashboard
+
+# 5️⃣ (New) Start the backend server (see backend directory for instructions)
+
+# 6️⃣ (New) Expose backend with ngrok/NGROCK
+ngrok http 8080
+# This will give you a public URL (e.g., https://abcd1234.ngrok.io)
+
+# 7️⃣ (New) Configure the app to use your backend URL
+# Change the backend/API endpoint in the app config to point to your ngrok URL.
+# Example: In your app's config or .env file, set:
+# API_URL=https://abcd1234.ngrok.io
 ```
+
+---
+
+## 🏗️ Backend Integration & Configuration
+
+- The backend server handles authentication, messaging, and data storage.
+- For local development, expose your backend using ngrok/NGROCK (`ngrok http 8080`).
+- Update your API URL in the project to use the public ngrok URL.
+- **Note:** Backend is still being developed and may have breaking changes.
+
+### Hibernate Mapping & SQL Setup
+
+If your backend uses Java with Hibernate ORM for database mapping:
+
+- Hibernate is used to map Java objects to SQL tables for user, messages, and other entities.
+- The database connection (SQL username and password) must be configured in your backend settings file (`application.properties`, `.env`, or similar).
+
+**Example `application.properties` configuration:**
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/messengerdb
+spring.datasource.username=YOUR_SQL_USERNAME
+spring.datasource.password=YOUR_SQL_PASSWORD
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+```
+
+**How Hibernate works:**
+- Maps your Java entities (e.g., User, Message) to database tables.
+- Handles CRUD operations automatically.
+- SQL credentials are required to connect to your MySQL/PostgreSQL/etc. database.
+
+> ⚠️ **Do not commit sensitive information (real SQL username/password) to the repository. Use environment variables or a `.env` file for local development.**
 
 ---
 
@@ -70,7 +111,8 @@ npm start
 4. **Contacts:**  
    - Allow access to contacts to discover friends.
 5. **Home & Messaging:**  
-   - (Feature in progress) Messaging interface coming soon!
+   - Messaging interface connects to backend (via ngrok URL).
+   - (Feature in progress) Real-time chat coming soon!
 
 ---
 
@@ -80,6 +122,8 @@ npm start
 - 👤 **Profile Setup:** Avatar or upload, you decide.
 - 📱 **Contact Sync:** Find friends easily.
 - ⚡ **Fast & Responsive:** Built with NativeWind and Expo for performance.
+- 🔗 **Backend Integration:** Connects to a live server for messaging.
+- 🗄️ **Hibernate ORM Mapping:** Java objects map to SQL tables for robust data management.
 
 ---
 
@@ -92,13 +136,16 @@ npm start
 - **Reanimated**
 - **Context API** (for user management)
 - **Animated Splash and UI elements**
+- **Express (Backend, WIP)**
+- **Java + Hibernate (Backend, WIP)**
+- **ngrok/NGROCK for local tunneling**
 
 ---
 
 ## 🚧 Project Status
 
-> ⚠️ **This app is currently in development.**  
-> Messaging, chat, notifications, and more features are coming soon!
+> ⚠️ **This app is currently in development.**
+> Messaging, chat, notifications, and backend features are actively being added!
 
 ---
 
