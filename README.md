@@ -16,8 +16,8 @@
 **React Native Messenger** is a modern cross-platform messaging app built with [Expo](https://expo.dev/), [React Native](https://reactnative.dev/), [TailwindCSS](https://tailwindcss.com/), and [TypeScript](https://www.typescriptlang.org/).
 
 > 🚧 **This project is actively under development.**
-> Now includes backend integration for real-time messaging!  
-> The backend uses a server that can be exposed via ngrok/NGROCK for testing and development.
+> Now includes backend integration with Hibernate ORM and SQL for real-time messaging!  
+> The backend can be exposed via ngrok for local development and testing.
 
 ---
 
@@ -28,8 +28,8 @@
 - [Yarn](https://yarnpkg.com/) or [npm](https://www.npmjs.com/)
 - Smartphone or emulator (iOS/Android)
 - (Optional) [VS Code](https://code.visualstudio.com/) for development
-- **(New)** [ngrok](https://ngrok.com/) or NGROCK for exposing backend server
-- **(New)** Hibernate & SQL (if using Java backend)
+- [ngrok](https://ngrok.com/) or NGROCK for exposing backend server
+- **Java Backend:** Hibernate ORM, MySQL database
 
 ---
 
@@ -54,13 +54,13 @@ npm start
 # - Scan the QR code in Expo Go (iOS/Android)
 # - Or launch on your simulator/emulator from the Expo dashboard
 
-# 5️⃣ (New) Start the backend server (see backend directory for instructions)
+# 5️⃣ Start the backend server (see backend directory for instructions)
 
-# 6️⃣ (New) Expose backend with ngrok/NGROCK
+# 6️⃣ Expose backend with ngrok
 ngrok http 8080
 # This will give you a public URL (e.g., https://abcd1234.ngrok.io)
 
-# 7️⃣ (New) Configure the app to use your backend URL
+# 7️⃣ Configure the app to use your backend URL
 # Change the backend/API endpoint in the app config to point to your ngrok URL.
 # Example: In your app's config or .env file, set:
 # API_URL=https://abcd1234.ngrok.io
@@ -68,35 +68,45 @@ ngrok http 8080
 
 ---
 
-## 🏗️ Backend Integration & Configuration
+## 🏗️ Backend Integration (Java, Hibernate, MySQL)
 
-- The backend server handles authentication, messaging, and data storage.
-- For local development, expose your backend using ngrok/NGROCK (`ngrok http 8080`).
-- Update your API URL in the project to use the public ngrok URL.
-- **Note:** Backend is still being developed and may have breaking changes.
+The backend uses Java with Hibernate ORM for mapping entities to SQL tables.  
+**Entities mapped:** User, Chat, FriendList.
 
-### Hibernate Mapping & SQL Setup
+### Hibernate Configuration Example
 
-If your backend uses Java with Hibernate ORM for database mapping:
+Your Hibernate configuration (typically in `hibernate.cfg.xml`):
 
-- Hibernate is used to map Java objects to SQL tables for user, messages, and other entities.
-- The database connection (SQL username and password) must be configured in your backend settings file (`application.properties`, `.env`, or similar).
-
-**Example `application.properties` configuration:**
-```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/messengerdb
-spring.datasource.username=YOUR_SQL_USERNAME
-spring.datasource.password=YOUR_SQL_PASSWORD
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC 
+    "-//Hibernate/Hibernate Configuration DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/chat_app?useSSL=false&amp;allowPublicKeyRetrieval=true</property>
+        <property name="hibernate.connection.username">YOUR_SQL_USERNAME</property>
+        <property name="hibernate.connection.password">YOUR_SQL_PASSWORD</property>
+        <property name="hibernate.hbm2ddl.auto">update</property>
+        <property name="hibernate.show_sql">true</property>
+        <mapping class = "entity.User"/>
+        <mapping class = "entity.Chat"/>
+        <mapping class = "entity.FriendList"/>
+    </session-factory>
+</hibernate-configuration>
 ```
 
-**How Hibernate works:**
-- Maps your Java entities (e.g., User, Message) to database tables.
-- Handles CRUD operations automatically.
-- SQL credentials are required to connect to your MySQL/PostgreSQL/etc. database.
+**Replace** `YOUR_SQL_USERNAME` and `YOUR_SQL_PASSWORD` with your actual MySQL credentials.  
+> **Security Tip:** For production and team development, use environment variables or a secure config file.  
+> **Do NOT commit actual credentials to public repositories.**
 
-> ⚠️ **Do not commit sensitive information (real SQL username/password) to the repository. Use environment variables or a `.env` file for local development.**
+### How Hibernate Works
+
+- Maps Java classes (`User`, `Chat`, `FriendList`) to SQL tables.
+- Handles database CRUD operations transparently.
+- SQL credentials are required for connecting to the MySQL database.
 
 ---
 
@@ -112,7 +122,8 @@ spring.jpa.show-sql=true
    - Allow access to contacts to discover friends.
 5. **Home & Messaging:**  
    - Messaging interface connects to backend (via ngrok URL).
-   - (Feature in progress) Real-time chat coming soon!
+   - Real-time chat powered by backend (Java/Hibernate/MySQL).
+   - (Feature in progress) More messaging features coming soon!
 
 ---
 
@@ -136,8 +147,8 @@ spring.jpa.show-sql=true
 - **Reanimated**
 - **Context API** (for user management)
 - **Animated Splash and UI elements**
-- **Express (Backend, WIP)**
-- **Java + Hibernate (Backend, WIP)**
+- **Java + Hibernate (Backend)**
+- **MySQL**
 - **ngrok/NGROCK for local tunneling**
 
 ---
