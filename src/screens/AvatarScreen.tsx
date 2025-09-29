@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   FlatList,
   Image,
   Pressable,
@@ -14,11 +15,19 @@ import { useUserRegistration } from "../components/UserContext";
 import { validateProfileImage } from "../util/Validation";
 import { ALERT_TYPE, Toast } from "react-native-alert-notification";
 import { createNewAccount } from "../api/UserService";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStack } from "../../App";
+import { useNavigation } from "@react-navigation/native";
+
+type AvatarScreenProps = NativeStackNavigationProp<RootStack, "AvatarScreen">;
 
 export default function AvatarScreen() {
   const [image, setImage] = useState<string | null>(null);
 
   const { userData, setUserData } = useUserRegistration();
+
+  const navigation = useNavigation<AvatarScreenProps>();
+  const [loading, setLoading] = useState(false);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -112,8 +121,9 @@ export default function AvatarScreen() {
 
         <View className="mt-2 w-full px-5">
           <Pressable
+          disabled={loading ? true : false}
             className="h-14 bg-green-600 items-center justify-center rounded-full"
-            onPress={async() => {
+            onPress={async () => {
               const validProfile = validateProfileImage(userData.profileImage ? { uri: userData.profileImage, type: "", fileSize: 0 }
                 : null);
               if (validProfile) {
@@ -123,16 +133,39 @@ export default function AvatarScreen() {
                   textBody: "You must select a profile image to proceed",
 
                 });
-              
-              } else {
-               await createNewAccount(userData);
-              }
 
+              } else {
+
+                try {
+                  setLoading(true);
+                  const response = await createNewAccount(userData);
+                  if (response.status) {
+                   navigation.replace("HomeScreen");
+                  } else {
+                    Toast.show({
+                      type: ALERT_TYPE.WARNING,
+                      title: "Account creation failed",
+                      textBody:response.message ,
+
+                    });
+                  }
+
+                } catch (error) {
+                  console.error(error);
+                } finally {
+                  setLoading(false);
+                }
+              }
             }}
           >
-            <Text className="font-bold text-lg text-slate-50">
-              Create Account
-            </Text>
+            {loading ? (
+              <ActivityIndicator size={'large'} color={"red"} />
+            ) : (
+              <Text className="font-bold text-lg text-slate-50">
+                Create Account
+              </Text>
+            )}
+
           </Pressable>
         </View>
       </View>

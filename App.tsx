@@ -12,6 +12,9 @@ import ContactScreen from "./src/screens/ContactScreen";
 import AvatarScreen from "./src/screens/AvatarScreen";
 import { UserRegistrationProvider } from "./src/components/UserContext";
 import { AlertNotificationRoot } from "react-native-alert-notification";
+import HomeTabs from "./src/screens/HomeTabs";
+import SingleChatScreen from "./src/screens/SingleChatScreen";
+import { WebSocketProvider } from "./src/socket/WebSocketProvider";
 
 export type RootStack = {
   SplashScreen: undefined;
@@ -22,18 +25,29 @@ export type RootStack = {
   HomeScreen: undefined;
   ProfileScreen: undefined;
   SettingScreen: undefined;
+  SingleChatScreen: {
+    chatId: number
+    friendName
+    : string;
+    lastSeenTime: string;
+    profileImage:string;
+  }
+
 };
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStack>();
 
 export default function App() {
+  const USER_ID = 1; //can use AssyncStorage to store user id after login
   return (
+
     <AlertNotificationRoot>
+      <WebSocketProvider userId={USER_ID}>
       <ThemeProvider>
         <UserRegistrationProvider>
           <NavigationContainer>
             <Stack.Navigator
-              initialRouteName="SplashScreen"
+              initialRouteName="HomeScreen"
               screenOptions={{
                 animation: "fade",
               }}
@@ -67,13 +81,20 @@ export default function App() {
                 component={SignInScreen}
                 options={{ headerShown: false }}
               />
-              <Stack.Screen name="HomeScreen" component={HomeScreen} />
+              <Stack.Screen 
+              name="HomeScreen"
+               component={HomeTabs}
+                options={{ headerShown: false }} />
+
               <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-              <Stack.Screen name="SettingScreen" component={SettingScreen} />
+              <Stack.Screen name="SingleChatScreen" component={SingleChatScreen} />
+             
+
             </Stack.Navigator>
           </NavigationContainer>
         </UserRegistrationProvider>
       </ThemeProvider>
+      </WebSocketProvider>
     </AlertNotificationRoot>
   );
 }
