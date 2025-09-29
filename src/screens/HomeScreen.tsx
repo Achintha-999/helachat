@@ -130,7 +130,7 @@ export default function HomeScreen() {
       onPress={() => {
         navigation.navigate("SingleChatScreen", {
           chatId: 1,
-          friendName: "Anjana",
+          friendName: "Achintha",
           lastSeenTime: "8:07 PM",
           profileImage: require("../../assets/avatar/avatar_1.png"),
         });
