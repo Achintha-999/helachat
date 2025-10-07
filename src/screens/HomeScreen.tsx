@@ -161,6 +161,7 @@ export default function HomeScreen() {
       className="flex-row items-center py-2 px-3 bg-gray-50 my-0.5"
       onPress={() => {
         navigation.navigate("SingleChatScreen", {
+<<<<<<< HEAD
           chatId: item.friendId,
           friendName: item.friendName,
           lastSeenTime: formatChatTime(item.lastTimeStamp),
@@ -170,6 +171,12 @@ export default function HomeScreen() {
                 " ",
                 "+"
               )}&background=random`,
+=======
+          chatId: 1,
+          friendName: "Achintha",
+          lastSeenTime: "8:07 PM",
+          profileImage: require("../../assets/avatar/avatar_1.png"),
+>>>>>>> 6ff7740f88c020075642f4d2f2c7fb992278ec47
         });
       }}
     >
