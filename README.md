@@ -1,4 +1,4 @@
-<h1 align="center">🚀 React Native Messenger</h1>
+<h1 align="center">🚀 Helachat</h1>
 <p align="center">
   <img src="https://img.shields.io/badge/Expo-%5E49.0.0-blue?logo=expo" alt="Expo Version">
   <img src="https://img.shields.io/badge/TypeScript-%5E5.3.3-blue?logo=typescript" alt="TypeScript">
@@ -13,7 +13,7 @@
 
 ## 💬 About the Project
 
-**React Native Messenger** is a modern cross-platform messaging app built with [Expo](https://expo.dev/), [React Native](https://reactnative.dev/), [TailwindCSS](https://tailwindcss.com/), and [TypeScript](https://www.typescriptlang.org/).
+**Helachat** is a modern cross-platform messaging app built with [Expo](https://expo.dev/), [React Native](https://reactnative.dev/), [TailwindCSS](https://tailwindcss.com/), and [TypeScript](https://www.typescriptlang.org/).
 
 > 🚧 **This project is actively under development.**
 > Now includes backend integration with Hibernate ORM and SQL for real-time messaging!  
@@ -37,8 +37,8 @@
 
 ```bash
 # 1️⃣ Clone the repository
-git clone https://github.com/Achintha-999/react-native-messenger.git
-cd react-native-messenger
+git clone https://github.com/Achintha-999/helachat.git
+cd helachat
 
 # 2️⃣ Install dependencies
 yarn install
@@ -164,19 +164,23 @@ Your Hibernate configuration (typically in `hibernate.cfg.xml`):
 
 This project does not yet specify a license.  
 Want to contribute, suggest features, or report bugs?  
-👉 [Open an issue](https://github.com/Achintha-999/react-native-messenger/issues) or submit a pull request!
+👉 [Open an issue](https://github.com/Achintha-999/helachat/issues) or submit a pull request!
 
 ---
 
 <p align="center">
   <img src="https://img.icons8.com/color/96/000000/chat--v1.png"/>
   <br>
-  <b>Messenger built for the future. Start the conversation TODAY.</b>
+  <b>Helachat — built for the future. Start the conversation TODAY.</b>
 </p>
 
 ---
 
 <p align="center">
+  <a href="https://github.com/Achintha-999/helachat">
+    <img src="https://img.shields.io/github/stars/Achintha-999/helachat?style=social" alt="GitHub stars">
+  </a>
+</p>
   <a href="https://github.com/Achintha-999/react-native-messenger">
     <img src="https://img.shields.io/github/stars/Achintha-999/react-native-messenger?style=social" alt="GitHub stars">
   </a>
