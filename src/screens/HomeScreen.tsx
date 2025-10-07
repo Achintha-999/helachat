@@ -34,8 +34,8 @@ export default function HomeScreen() {
     navigation.setOptions({
       header: () => (
         <View
-          className={`h-24  bg-white justify-center items-center flex-row shadow-2xl elevation-2xl ${
-            Platform.OS === "android" ? "py-5" : "py-0"
+          className={`h-20 bg-white justify-center items-center flex-row shadow-2xl elevation-2xl ${
+            Platform.OS === "ios" ? `py-5` : `py-0`
           }`}
         >
           <View className="flex-1 items-start ms-3">
@@ -56,27 +56,24 @@ export default function HomeScreen() {
                 onRequestClose={() => setModalVisible(false)}
               >
                 <Pressable
-                  style={{ flex: 1, backgroundColor: "transparent" }}
+                  className="flex-1 bg-transparent"
                   onPress={() => {
                     setModalVisible(false); // modal close when press outside
                   }}
                 >
                   <Pressable
-                    style={{ backgroundColor: "#FEE2E2" }}
+                    className="bg-red-100"
                     onPress={(e) => {
                       e.stopPropagation(); // prevent modal close inside of the modal
                     }}
                   >
                     {/* root modal view */}
-                    <View style={{ justifyContent: "flex-end", alignItems: "flex-end", padding: 20 }}>
+                    <View className="justify-end items-end p-5">
                       {/* content view */}
 
                       <View
+                        className="bg-white rounded-md w-60 p-3"
                         style={{
-                          backgroundColor: "white",
-                          borderRadius: 8,
-                          width: 240,
-                          padding: 12,
                           shadowColor: "#000",
                           shadowOffset: { width: 0, height: 2 },
                           shadowOpacity: 0.25,
@@ -85,51 +82,30 @@ export default function HomeScreen() {
                         }}
                       >
                         <TouchableOpacity
-                          style={{
-                            height: 48,
-                            marginVertical: 8,
-                            justifyContent: "center",
-                            alignItems: "flex-start",
-                            borderBottomWidth: 2,
-                            borderBottomColor: "#E5E7EB",
-                          }}
+                          className="h-12 my-2 justify-center items-start border-b-2 border-b-gray-100"
                           onPress={() => {
                             navigation.navigate("SettingScreen");
                             setModalVisible(false);
                           }}
                         >
-                          <Text style={{ fontWeight: "bold", fontSize: 18 }}>Settings</Text>
+                          <Text className="font-bold text-lg">Settings</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                          style={{
-                            height: 48,
-                            marginVertical: 8,
-                            justifyContent: "center",
-                            alignItems: "flex-start",
-                            borderBottomWidth: 2,
-                            borderBottomColor: "#E5E7EB",
-                          }}
+                          className="h-12 my-2 justify-center items-start border-b-2 border-b-gray-100"
                           onPress={() => {
                             navigation.navigate("ProfileScreen");
                             setModalVisible(false);
                           }}
                         >
-                          <Text style={{ fontWeight: "bold", fontSize: 18 }}>My Profile</Text>
+                          <Text className="font-bold text-lg">My Profile</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                          style={{
-                            height: 48,
-                            marginVertical: 8,
-                            justifyContent: "center",
-                            alignItems: "flex-start",
-                            borderBottomWidth: 2,
-                            borderBottomColor: "#E5E7EB",
-                          }}
+                          className="h-12 my-2 justify-center items-start border-b-2 border-b-gray-100"
                           onPress={() => {
                             if (auth) auth.signOut();
                           }}
                         >
-                          <Text style={{ fontWeight: "bold", fontSize: 18 }}>Log Out</Text>
+                          <Text className="font-bold text-lg">Log Out</Text>
                         </TouchableOpacity>
                       </View>
                     </View>
@@ -161,7 +137,6 @@ export default function HomeScreen() {
       className="flex-row items-center py-2 px-3 bg-gray-50 my-0.5"
       onPress={() => {
         navigation.navigate("SingleChatScreen", {
-<<<<<<< HEAD
           chatId: item.friendId,
           friendName: item.friendName,
           lastSeenTime: formatChatTime(item.lastTimeStamp),
@@ -171,12 +146,6 @@ export default function HomeScreen() {
                 " ",
                 "+"
               )}&background=random`,
-=======
-          chatId: 1,
-          friendName: "Achintha",
-          lastSeenTime: "8:07 PM",
-          profileImage: require("../../assets/avatar/avatar_1.png"),
->>>>>>> 6ff7740f88c020075642f4d2f2c7fb992278ec47
         });
       }}
     >
