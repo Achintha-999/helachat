@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as ImagePicker from "expo-image-picker";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useUserRegistration } from "../components/UserContext";
 import { validateProfileImage } from "../util/Validation";
 import { ALERT_TYPE, Toast } from "react-native-alert-notification";
@@ -18,16 +18,17 @@ import { createNewAccount } from "../api/UserService";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStack } from "../../App";
 import { useNavigation } from "@react-navigation/native";
+import { AuthContext } from "../components/AuthProvider";
 
-type AvatarScreenProps = NativeStackNavigationProp<RootStack, "AvatarScreen">;
+type AvataScreenProps = NativeStackNavigationProp<RootStack, "AvatarScreen">;
 
 export default function AvatarScreen() {
+  const navigation = useNavigation<AvataScreenProps>();
+  const [loading, setLoading] = useState(false);
+
   const [image, setImage] = useState<string | null>(null);
 
   const { userData, setUserData } = useUserRegistration();
-
-  const navigation = useNavigation<AvatarScreenProps>();
-  const [loading, setLoading] = useState(false);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -54,7 +55,7 @@ export default function AvatarScreen() {
     require("../../assets/avatar/avatar_6.png"),
   ];
 
-
+  const auth = useContext(AuthContext);
 
   return (
     <SafeAreaView className="bg-white flex-1">
@@ -73,7 +74,7 @@ export default function AvatarScreen() {
           <View className="items-center mt-2 h-72">
             <Pressable
               className="h-[120] w-[120] rounded-full bg-gray-100 justify-center items-center border-2 border-gray-400
-              border-dashed"
+            border-dashed"
               onPress={pickImage}
             >
               {image ? (
@@ -121,37 +122,39 @@ export default function AvatarScreen() {
 
         <View className="mt-2 w-full px-5">
           <Pressable
-          disabled={loading ? true : false}
+            disabled={loading ? true : false}
             className="h-14 bg-green-600 items-center justify-center rounded-full"
             onPress={async () => {
-              const validProfile = validateProfileImage(userData.profileImage ? { uri: userData.profileImage, type: "", fileSize: 0 }
-                : null);
+              const validProfile = validateProfileImage(
+                userData.profileImage
+                  ? { uri: userData.profileImage, type: "", fileSize: 0 }
+                  : null
+              );
               if (validProfile) {
                 Toast.show({
                   type: ALERT_TYPE.WARNING,
-                  title: "Please select a profile image",
-                  textBody: "You must select a profile image to proceed",
-
+                  title: "Warning",
+                  textBody: "Select a profile image or an avatar",
                 });
-
               } else {
-
                 try {
                   setLoading(true);
                   const response = await createNewAccount(userData);
                   if (response.status) {
-                   navigation.replace("HomeScreen");
+                    const id = response.userId;
+                    if (auth) {
+                      await auth.signUp(String(id));
+                      // navigation.replace("HomeScreen");
+                    }
                   } else {
                     Toast.show({
                       type: ALERT_TYPE.WARNING,
-                      title: "Account creation failed",
-                      textBody:response.message ,
-
+                      title: "Warning",
+                      textBody: response.message,
                     });
                   }
-
                 } catch (error) {
-                  console.error(error);
+                  console.log(error);
                 } finally {
                   setLoading(false);
                 }
@@ -159,16 +162,16 @@ export default function AvatarScreen() {
             }}
           >
             {loading ? (
-              <ActivityIndicator size={'large'} color={"red"} />
+              <ActivityIndicator size={"large"} color={"blue"} />
             ) : (
               <Text className="font-bold text-lg text-slate-50">
                 Create Account
               </Text>
             )}
-
           </Pressable>
         </View>
       </View>
     </SafeAreaView>
   );
 }
+

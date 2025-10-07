@@ -7,7 +7,7 @@ import SignInScreen from "./src/screens/SignInScreen";
 import HomeScreen from "./src/screens/HomeScreen";
 import ProfileScreen from "./src/screens/ProfileScreen";
 import SettingScreen from "./src/screens/SettingScreen";
-import { ThemeProvider } from "./theme/ThemeProvider";
+import { ThemeProvider } from "././theme/ThemeProvider";
 import ContactScreen from "./src/screens/ContactScreen";
 import AvatarScreen from "./src/screens/AvatarScreen";
 import { UserRegistrationProvider } from "./src/components/UserContext";
@@ -15,6 +15,12 @@ import { AlertNotificationRoot } from "react-native-alert-notification";
 import HomeTabs from "./src/screens/HomeTabs";
 import SingleChatScreen from "./src/screens/SingleChatScreen";
 import { WebSocketProvider } from "./src/socket/WebSocketProvider";
+import NewChatScreen from "./src/screens/NewChatScreen";
+import NewContactScreen from "./src/screens/NewContactScreen";
+import { useWebSocketPing } from "./src/socket/UseWebSocketPing";
+import { useContext } from "react";
+import { AuthContext, AuthProvider } from "./src/components/AuthProvider";
+import SignOutScreen from "./src/screens/SignOut";
 
 export type RootStack = {
   SplashScreen: undefined;
@@ -26,75 +32,110 @@ export type RootStack = {
   ProfileScreen: undefined;
   SettingScreen: undefined;
   SingleChatScreen: {
-    chatId: number
-    friendName
-    : string;
+    chatId: number;
+    friendName: string;
     lastSeenTime: string;
-    profileImage:string;
-  }
-
+    profileImage: string;
+  };
+  NewChatScreen: undefined;
+  NewContactScreen: undefined;
+  SignOutScreen: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStack>();
 
-export default function App() {
-  const USER_ID = 1; //can use AssyncStorage to store user id after login
-  return (
+function ChatApp() {
+  const auth = useContext(AuthContext);
 
-    <AlertNotificationRoot>
-      <WebSocketProvider userId={USER_ID}>
+  return (
+    <WebSocketProvider userId={auth ? Number(auth.userId) : 0}>
       <ThemeProvider>
         <UserRegistrationProvider>
           <NavigationContainer>
             <Stack.Navigator
-              initialRouteName="HomeScreen"
+              initialRouteName="SplashScreen"
               screenOptions={{
                 animation: "fade",
               }}
             >
-              <Stack.Screen
-                name="SplashScreen"
-                component={SplashScreen}
-                options={{ headerShown: false }}
-              />
-
-              <Stack.Screen
-                name="SignUpScreen"
-                component={SignUpScreen}
-                options={{ headerShown: false }}
-              />
-
-              <Stack.Screen
-                name="ContactScreen"
-                component={ContactScreen}
-                options={{ headerShown: false }}
-              />
-
-              <Stack.Screen
-                name="AvatarScreen"
-                component={AvatarScreen}
-                options={{ headerShown: false }}
-              />
-
-              <Stack.Screen
-                name="SignInScreen"
-                component={SignInScreen}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen 
-              name="HomeScreen"
-               component={HomeTabs}
-                options={{ headerShown: false }} />
-
-              <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-              <Stack.Screen name="SingleChatScreen" component={SingleChatScreen} />
-             
-
+              {auth?.isLoading ? (
+                <Stack.Screen
+                  name="SplashScreen"
+                  component={SplashScreen}
+                  options={{ headerShown: false }}
+                />
+              ) : auth?.userId === null ? (
+                // User not sign up
+                <Stack.Group>
+                  <Stack.Screen
+                    name="SignUpScreen"
+                    component={SignUpScreen}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="ContactScreen"
+                    component={ContactScreen}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="AvatarScreen"
+                    component={AvatarScreen}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="SignInScreen"
+                    component={SignInScreen}
+                    options={{ headerShown: false }}
+                  />
+                </Stack.Group>
+              ) : (
+                // When user sign up completed
+                <Stack.Group>
+                  <Stack.Screen
+                    name="HomeScreen"
+                    component={HomeTabs}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="SingleChatScreen"
+                    component={SingleChatScreen}
+                  />
+                  <Stack.Screen
+                    name="ProfileScreen"
+                    component={ProfileScreen}
+                  />
+                  <Stack.Screen
+                    name="SettingScreen"
+                    component={SettingScreen}
+                  />
+                  <Stack.Screen
+                    name="NewChatScreen"
+                    component={NewChatScreen}
+                  />
+                  <Stack.Screen
+                    name="NewContactScreen"
+                    component={NewContactScreen}
+                  />
+                  <Stack.Screen
+                    name="SignOutScreen"
+                    component={SignOutScreen}
+                  />
+                </Stack.Group>
+              )}
             </Stack.Navigator>
           </NavigationContainer>
         </UserRegistrationProvider>
       </ThemeProvider>
-      </WebSocketProvider>
+    </WebSocketProvider>
+  );
+}
+
+export default function App() {
+  return (
+    <AlertNotificationRoot>
+      <AuthProvider>
+        <ChatApp />
+      </AuthProvider>
     </AlertNotificationRoot>
   );
 }

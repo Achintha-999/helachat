@@ -2,7 +2,9 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import {
   FlatList,
   Image,
+  Modal,
   Platform,
+  Pressable,
   StatusBar,
   Text,
   TextInput,
@@ -12,91 +14,28 @@ import {
 import { RootStack } from "../../App";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useLayoutEffect, useState } from "react";
+import { useContext, useLayoutEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { useChatList } from "../socket/UseChatList";
-
-const chats = [
-  {
-    id: 1,
-    name: "Sahan Perera",
-    lastMessage: "Hello, Kamal",
-    time: "9:46 pm",
-    unread: 2,
-    profile: require("../../assets/avatar/avatar_1.png"),
-  },
-  {
-    id: 2,
-    name: "Fathima",
-    lastMessage: "Hello",
-    time: "Yesterday",
-    unread: 0,
-    profile: require("../../assets/avatar/avatar_2.png"),
-  },
-  {
-    id: 3,
-    name: "Nayana",
-    lastMessage: "Hello, Kamal",
-    time: "2025/9/24",
-    unread: 2,
-    profile: require("../../assets/avatar/avatar_3.png"),
-  },
-  {
-    id: 4,
-    name: "Anjana Perera",
-    lastMessage: "Bro,",
-    time: "10.00 pm",
-    unread: 1,
-    profile: require("../../assets/avatar/avatar_4.png"),
-  },
-  {
-    id: 5,
-    name: "Kamal Perera",
-    lastMessage: "Whats up bro",
-    time: "2025/09/20",
-    unread: 2,
-    profile: require("../../assets/avatar/avatar_5.png"),
-  },
-  {
-    id: 6,
-    name: "Dalani Senarathne",
-    lastMessage: "Hey there!",
-    time: "2025/09/18",
-    unread: 2,
-    profile: require("../../assets/avatar/avatar_6.png"),
-  },
-  {
-    id: 7,
-    name: "Sara Fernando",
-    lastMessage: "Hello, Whats up?",
-    time: "2025/09/18",
-    unread: 2,
-    profile: require("../../assets/avatar/avatar_6.png"),
-  },
-  {
-    id: 8,
-    name: "Anjana Kumari",
-    lastMessage: "Hello, How are you?",
-    time: "2025/09/18",
-    unread: 2,
-    profile: require("../../assets/avatar/avatar_6.png"),
-  },
-];
+import { formatChatTime } from "../util/DateFormatter";
+import { Chat } from "../socket/chat";
+import { AuthContext } from "../components/AuthProvider";
 
 type HomeScreenProps = NativeStackNavigationProp<RootStack, "HomeScreen">;
 
 export default function HomeScreen() {
   const navigation = useNavigation<HomeScreenProps>();
   const [search, setSearch] = useState("");
-
   const chatList = useChatList();
+  const [isModalVisible, setModalVisible] = useState(false);
+  const auth = useContext(AuthContext);
 
   useLayoutEffect(() => {
     navigation.setOptions({
       header: () => (
         <View
-          className={`h-20 bg-white justify-center items-center flex-row shadow-2xl elevation-2xl ${
-            Platform.OS === "ios" ? `py-5` : `py-0`
+          className={`h-24  bg-white justify-center items-center flex-row shadow-2xl elevation-2xl ${
+            Platform.OS === "android" ? "py-5" : "py-0"
           }`}
         >
           <View className="flex-1 items-start ms-3">
@@ -107,46 +46,163 @@ export default function HomeScreen() {
               <TouchableOpacity className="me-5">
                 <Ionicons name="camera" size={26} color="black" />
               </TouchableOpacity>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => setModalVisible(true)}>
                 <Ionicons name="ellipsis-vertical" size={24} color="black" />
               </TouchableOpacity>
+              <Modal
+                animationType="fade"
+                visible={isModalVisible}
+                transparent={true}
+                onRequestClose={() => setModalVisible(false)}
+              >
+                <Pressable
+                  style={{ flex: 1, backgroundColor: "transparent" }}
+                  onPress={() => {
+                    setModalVisible(false); // modal close when press outside
+                  }}
+                >
+                  <Pressable
+                    style={{ backgroundColor: "#FEE2E2" }}
+                    onPress={(e) => {
+                      e.stopPropagation(); // prevent modal close inside of the modal
+                    }}
+                  >
+                    {/* root modal view */}
+                    <View style={{ justifyContent: "flex-end", alignItems: "flex-end", padding: 20 }}>
+                      {/* content view */}
+
+                      <View
+                        style={{
+                          backgroundColor: "white",
+                          borderRadius: 8,
+                          width: 240,
+                          padding: 12,
+                          shadowColor: "#000",
+                          shadowOffset: { width: 0, height: 2 },
+                          shadowOpacity: 0.25,
+                          shadowRadius: 3.84,
+                          elevation: 5,
+                        }}
+                      >
+                        <TouchableOpacity
+                          style={{
+                            height: 48,
+                            marginVertical: 8,
+                            justifyContent: "center",
+                            alignItems: "flex-start",
+                            borderBottomWidth: 2,
+                            borderBottomColor: "#E5E7EB",
+                          }}
+                          onPress={() => {
+                            navigation.navigate("SettingScreen");
+                            setModalVisible(false);
+                          }}
+                        >
+                          <Text style={{ fontWeight: "bold", fontSize: 18 }}>Settings</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={{
+                            height: 48,
+                            marginVertical: 8,
+                            justifyContent: "center",
+                            alignItems: "flex-start",
+                            borderBottomWidth: 2,
+                            borderBottomColor: "#E5E7EB",
+                          }}
+                          onPress={() => {
+                            navigation.navigate("ProfileScreen");
+                            setModalVisible(false);
+                          }}
+                        >
+                          <Text style={{ fontWeight: "bold", fontSize: 18 }}>My Profile</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={{
+                            height: 48,
+                            marginVertical: 8,
+                            justifyContent: "center",
+                            alignItems: "flex-start",
+                            borderBottomWidth: 2,
+                            borderBottomColor: "#E5E7EB",
+                          }}
+                          onPress={() => {
+                            if (auth) auth.signOut();
+                          }}
+                        >
+                          <Text style={{ fontWeight: "bold", fontSize: 18 }}>Log Out</Text>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  </Pressable>
+                </Pressable>
+              </Modal>
             </View>
           </View>
         </View>
       ),
     });
-  }, [navigation]);
+  }, [navigation, isModalVisible]);
 
-  const filterdChats = chats.filter((chat) => {
-    return (
-      chat.name.toLowerCase().includes(search.toLowerCase()) ||
-      chat.lastMessage.toLowerCase().includes(search.toLowerCase())
+  const filterdChats = [...chatList]
+    .filter((chat) => {
+      return (
+        chat.friendName.toLowerCase().includes(search.toLowerCase()) ||
+        chat.lastMessage.toLowerCase().includes(search.toLowerCase())
+      );
+    })
+    .sort(
+      (a, b) =>
+        new Date(b.lastTimeStamp).getTime() -
+        new Date(a.lastTimeStamp).getTime()
     );
-  });
 
-  const renderItem = ({ item }: any) => (
+  const renderItem = ({ item }: { item: Chat }) => (
     <TouchableOpacity
       className="flex-row items-center py-2 px-3 bg-gray-50 my-0.5"
       onPress={() => {
         navigation.navigate("SingleChatScreen", {
-          chatId: 1,
-          friendName: "Anjana",
-          lastSeenTime: "8:07 PM",
-          profileImage: require("../../assets/avatar/avatar_1.png"),
+          chatId: item.friendId,
+          friendName: item.friendName,
+          lastSeenTime: formatChatTime(item.lastTimeStamp),
+          profileImage: item.profileImage
+            ? item.profileImage
+            : `https://ui-avatars.com/api/?name=${item.friendName.replace(
+                " ",
+                "+"
+              )}&background=random`,
         });
       }}
     >
-      <Image source={item.profile} className="h-16 w-16 rounded-full" />
-      <View className="flex-1">
+      <TouchableOpacity className="h-14 w-14 rounded-full border-1 border-gray-300 justify-center items-center">
+        {item.profileImage ? (
+          <Image
+            source={{ uri: item.profileImage }}
+            className="h-14 w-14 rounded-full"
+          />
+        ) : (
+          <Image
+            source={{
+              uri: `https://ui-avatars.com/api/?name=${item.friendName.replace(
+                " ",
+                "+"
+              )}&background=random`,
+            }}
+            className="h-14 w-14 rounded-full"
+          />
+        )}
+      </TouchableOpacity>
+      <View className="flex-1 ms-3">
         <View className="flex-row justify-between">
           <Text
             className="font-bold text-xl text-gray-600"
             numberOfLines={1}
             ellipsizeMode="tail"
           >
-            {item.name}
+            {item.friendName}
           </Text>
-          <Text className="font-bold text-xs text-gray-500">{item.time}</Text>
+          <Text className="font-bold text-xs text-gray-500">
+            {formatChatTime(item.lastTimeStamp)}
+          </Text>
         </View>
         <View className="flex-row justify-between items-center">
           <Text
@@ -156,10 +212,10 @@ export default function HomeScreen() {
           >
             {item.lastMessage}
           </Text>
-          {item.unread > 0 && (
+          {item.unreadCount > 0 && (
             <View className="bg-green-500 rounded-full px-2 py-2 ms-2">
               <Text className="text-slate-50 text-xs font-bold">
-                {item.unread}
+                {item.unreadCount}
               </Text>
             </View>
           )}
@@ -191,7 +247,10 @@ export default function HomeScreen() {
         />
       </View>
       <View className="absolute bg-green-500 bottom-16 right-10 h-20 w-20 rounded-3xl">
-        <TouchableOpacity className="h-20 w-20 rounded-3xl justify-center items-center">
+        <TouchableOpacity
+          className="h-20 w-20 rounded-3xl justify-center items-center"
+          onPress={() => navigation.navigate("NewChatScreen")}
+        >
           <Ionicons name="chatbox-ellipses" size={26} color="black" />
         </TouchableOpacity>
       </View>

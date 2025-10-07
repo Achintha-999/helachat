@@ -1,32 +1,52 @@
+import { useContext } from "react";
 import { UserRegistrationData } from "../components/UserContext";
 
-const API = process.env.EXPO_PUBLIC_APP_URL + "/ChatAppBackend";
 
-export const createNewAccount = async (useUserRegistrationData: UserRegistrationData
+const API = process.env.EXPO_PUBLIC_APP_URL + "/HelaChatBackend";
+
+export const createNewAccount = async (
+  userRegistrationData: UserRegistrationData
 ) => {
+  let formData = new FormData();
+  formData.append("firstName", userRegistrationData.firstName);
+  formData.append("lastName", userRegistrationData.lastName);
+  formData.append("countryCode", userRegistrationData.countryCode);
+  formData.append("contactNo", userRegistrationData.contactNo);
+  formData.append("profileImage", {
+    uri: userRegistrationData.profileImage,
+    name: "profile.png",
+    type: "image/png",
+  } as any);
 
-    let formData = new FormData();
-    formData.append("firstName", useUserRegistrationData.firstName);
-    formData.append("lastName", useUserRegistrationData.lastName);
-    formData.append("countryCode", useUserRegistrationData.countryCode);
-    formData.append("contactNo", useUserRegistrationData.contactNo);
-    formData.append("profileImage", {
-        uri: useUserRegistrationData.profileImage,
-        name: "profile.png",
-        type: "image/png",
-    } as any);
+  const response = await fetch(API + "/UserController", {
+    method: "POST",
+    body: formData,
+  });
 
-    const response = await fetch(API + "/UserController", {
-        method: "POST",
-        body: formData,
-
-    });
-    if (response.ok) {
-        const json = await response.json();
-        return json;
-    } else {
-        return "Failed to create account. Please try again.";
-    }
-
+  if (response.ok) {
+    const json = await response.json();
+    return json;
+  } else {
+    return "OOPS! Account creation failed!";
+  }
 };
 
+export const uploadProfileImage = async (userId:string, imageUri: string) => {
+  let formData = new FormData();
+  formData.append("userId", userId);
+  formData.append("profileImage", {
+    uri: imageUri,
+    type: "image/png", 
+    name: "profile.png",
+  } as any)
+
+  const response = await fetch(API + "/ProfileController", {
+    method: "POST",
+    body: formData,
+  });
+  if (response.ok) {
+    return await response.json();
+  } else {
+    console.warn("Profile image uploading failed!");
+  }
+};

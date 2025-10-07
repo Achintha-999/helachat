@@ -3,7 +3,7 @@ import { View } from "react-native";
 interface Circle {
     width: number;
     height: number;
-    borderradius: number;
+    borderRadius: number;
     fillcolor?: string;
     className?: string;
     topValue?: number;
@@ -19,7 +19,7 @@ export default function CircleShape(c: Circle) {
         style={{
             width: c.width,
             height: c.height,
-            borderRadius: c.borderradius,
+            borderRadius: c.borderRadius,
             position: 'absolute',
             ...(c.fillcolor !== undefined && { backgroundColor: c.fillcolor }),
             ...(c.topValue !== undefined && { top: c.topValue }),
