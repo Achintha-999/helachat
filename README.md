@@ -1,187 +1,104 @@
-<h1 align="center">🚀 Helachat</h1>
-<p align="center">
-  <img src="https://img.shields.io/badge/Expo-%5E49.0.0-blue?logo=expo" alt="Expo Version">
-  <img src="https://img.shields.io/badge/TypeScript-%5E5.3.3-blue?logo=typescript" alt="TypeScript">
-  <img src="https://img.shields.io/badge/TailwindCSS-%5E3.4.1-blue?logo=tailwindcss" alt="TailwindCSS">
-  <img src="https://img.shields.io/badge/Status-In%20Development-yellow?logo=githubactions" alt="Project Status">
-</p>
-<p align="center">
-  <img width="220" src="assets/logo.png" alt="App Logo">
-</p>
+# Helachat
 
----
+Helachat is a React Native chat application built with Expo and TypeScript. It provides a mobile client for real-time chat using a socket-based backend. This repository contains the Expo app (client) and the source organized under src/ including screens, components, API helpers and socket code.
 
-## 💬 About the Project
+## Table of contents
+- Project overview
+- Features
+- Tech stack
+- Requirements
+- Architecture & How it works
+- Getting started (local development)
+- Configuration
+- Running the app
+- Usage examples
+- Development workflow
+- Contributing
+- License
 
-**Helachat** is a modern cross-platform messaging app built with [Expo](https://expo.dev/), [React Native](https://reactnative.dev/), [TailwindCSS](https://tailwindcss.com/), and [TypeScript](https://www.typescriptlang.org/).
+## Project overview
+Helachat is a lightweight mobile chat client built with Expo and React Native (TypeScript). It connects to a socket-based backend (not included in this repository unless you have a separate server) to exchange messages in real time. The app includes screens for authentication, chat lists, and chat rooms, and utilities for managing API calls and socket connections.
 
-> 🚧 **This project is actively under development.**
-> Now includes backend integration with Hibernate ORM and SQL for real-time messaging!  
-> The backend can be exposed via ngrok for local development and testing.
+## Features
+- Real-time messaging via sockets (client-side socket code in src/socket)
+- Screens and components scaffolded under src/screens and src/components
+- Async storage helpers for local persistence
+- Navigation using React Navigation
 
----
+## Tech stack
+- Expo (React Native)
+- React Native + TypeScript
+- React Navigation
+- @react-native-async-storage/async-storage
+- Socket client implementation (see src/socket)
 
-## 🛠️ Requirements
+## Requirements
+- Node.js 16+ (recommended)
+- npm or yarn
+- Expo CLI (optional but recommended): npm install -g expo-cli
+- A running chat server endpoint (WebSocket / Socket.IO or equivalent) for real-time messaging
 
-- [Node.js](https://nodejs.org/) (v18+ recommended)
-- [Expo CLI](https://docs.expo.dev/get-started/installation/)
-- [Yarn](https://yarnpkg.com/) or [npm](https://www.npmjs.com/)
-- Smartphone or emulator (iOS/Android)
-- (Optional) [VS Code](https://code.visualstudio.com/) for development
-- [ngrok](https://ngrok.com/) or NGROCK for exposing backend server
-- **Java Backend:** Hibernate ORM, MySQL database
+## Architecture & How it works
+1. The Expo app (client) provides UI screens and uses a socket client to connect to a chat server.
+2. On startup, the app initializes navigation and socket connection logic (src/socket).
+3. The user authenticates (if the server requires it) and the client stores the token locally using AsyncStorage.
+4. When entering a chat room, the client joins a socket room and emits/receives message events. Messages may also be fetched/sent via REST endpoints defined in src/api.
+5. The UI listens for incoming socket events and updates the chat message list in real time.
 
----
+## Getting started (local development)
+1. Clone the repo:
+   git clone https://github.com/Achintha-999/helachat.git
+   cd helachat
 
-## ⚡ Installation & Running Locally
+2. Install dependencies:
+   npm install
+   # or
+   yarn install
 
-```bash
-# 1️⃣ Clone the repository
-git clone https://github.com/Achintha-999/helachat.git
-cd helachat
+3. If you use Expo CLI, run:
+   expo start
 
-# 2️⃣ Install dependencies
-yarn install
-# or
-npm install
+4. Open the project in Expo Go on your phone or an emulator. Use the QR code in the Metro bundler.
 
-# 3️⃣ Start Expo development server
-yarn start
-# or
-npm start
+Note: The app expects a backend server for real-time functionality. Check src/config or src/api for where the API base URL or socket URL is defined and update it to point to your server.
 
-# 4️⃣ Run the app on your device or emulator
-# - Scan the QR code in Expo Go (iOS/Android)
-# - Or launch on your simulator/emulator from the Expo dashboard
+## Configuration
+- Look for a config file or variables that define API_URL / SOCKET_URL. If none exists, create a simple file (e.g., src/config/index.ts) exporting constants:
 
-# 5️⃣ Start the backend server (see backend directory for instructions)
+  export const API_URL = 'https://your-server.example.com';
+  export const SOCKET_URL = 'https://your-server.example.com';
 
-# 6️⃣ Expose backend with ngrok
-ngrok http 8080
-# This will give you a public URL (e.g., https://abcd1234.ngrok.io)
+- If the project uses environment variables, follow the pattern used in the codebase (eg. react-native-dotenv or .env files).
 
-# 7️⃣ Configure the app to use your backend URL
-# Change the backend/API endpoint in the app config to point to your ngrok URL.
-# Example: In your app's config or .env file, set:
-# API_URL=https://abcd1234.ngrok.io
-```
+## Running the app
+- Development:
+  expo start
 
----
+- Android emulator / iOS simulator:
+  Use Expo CLI to open in simulator or scan QR with Expo Go.
 
-## 🏗️ Backend Integration (Java, Hibernate, MySQL)
+## Usage examples
+- Connect socket (example):
+  const socket = initSocket(SOCKET_URL, token);
+  socket.emit('join-room', { roomId });
+  socket.on('message', (msg) => setMessages(prev => [...prev, msg]));
 
-The backend uses Java with Hibernate ORM for mapping entities to SQL tables.  
-**Entities mapped:** User, Chat, FriendList.
+- Send message (example):
+  socket.emit('send-message', { roomId, text });
 
-### Hibernate Configuration Example
+## Development workflow
+- Use branches named feature/<name> or fix/<name>
+- Run linting and type checks if configured
+- Commit with clear messages and open PRs for reviews
 
-Your Hibernate configuration (typically in `hibernate.cfg.xml`):
+## Contributing
+- Fork the repository, create a branch, and open a PR with a description of changes.
 
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-configuration PUBLIC 
-    "-//Hibernate/Hibernate Configuration DTD 3.0//EN" 
-    "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
-<hibernate-configuration>
-    <session-factory>
-        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/chat_app?useSSL=false&amp;allowPublicKeyRetrieval=true</property>
-        <property name="hibernate.connection.username">YOUR_SQL_USERNAME</property>
-        <property name="hibernate.connection.password">YOUR_SQL_PASSWORD</property>
-        <property name="hibernate.hbm2ddl.auto">update</property>
-        <property name="hibernate.show_sql">true</property>
-        <mapping class = "entity.User"/>
-        <mapping class = "entity.Chat"/>
-        <mapping class = "entity.FriendList"/>
-    </session-factory>
-</hibernate-configuration>
-```
+## License
+Specify the project license (e.g., MIT) in LICENSE file.
 
-**Replace** `YOUR_SQL_USERNAME` and `YOUR_SQL_PASSWORD` with your actual MySQL credentials.  
-> **Security Tip:** For production and team development, use environment variables or a secure config file.  
-> **Do NOT commit actual credentials to public repositories.**
-
-### How Hibernate Works
-
-- Maps Java classes (`User`, `Chat`, `FriendList`) to SQL tables.
-- Handles database CRUD operations transparently.
-- SQL credentials are required for connecting to the MySQL database.
-
----
-
-## 🎨 How the App Works
-
-1. **Splash Screen:** Loads with smooth animation and branding.
-2. **Sign Up Flow:**  
-   - Enter your name, select your country, and phone number.  
-   - Pick a profile image (upload or avatar).
-3. **Theme Selection:**  
-   - Change between light and dark mode.
-4. **Contacts:**  
-   - Allow access to contacts to discover friends.
-5. **Home & Messaging:**  
-   - Messaging interface connects to backend (via ngrok URL).
-   - Real-time chat powered by backend (Java/Hibernate/MySQL).
-   - (Feature in progress) More messaging features coming soon!
-
----
-
-## ✨ Features Preview
-
-- 🌙 **Theme Switch:** Personalize your chat experience.
-- 👤 **Profile Setup:** Avatar or upload, you decide.
-- 📱 **Contact Sync:** Find friends easily.
-- ⚡ **Fast & Responsive:** Built with NativeWind and Expo for performance.
-- 🔗 **Backend Integration:** Connects to a live server for messaging.
-- 🗄️ **Hibernate ORM Mapping:** Java objects map to SQL tables for robust data management.
-
----
-
-## 📦 Tech Stack
-
-- **React Native** / **Expo**
-- **TypeScript**
-- **TailwindCSS** (NativeWind)
-- **React Navigation**
-- **Reanimated**
-- **Context API** (for user management)
-- **Animated Splash and UI elements**
-- **Java + Hibernate (Backend)**
-- **MySQL**
-- **ngrok/NGROCK for local tunneling**
-
----
-
-## 🚧 Project Status
-
-> ⚠️ **This app is currently in development.**
-> Messaging, chat, notifications, and backend features are actively being added!
-
----
-
-## 📝 License & Contributing
-
-This project does not yet specify a license.  
-Want to contribute, suggest features, or report bugs?  
-👉 [Open an issue](https://github.com/Achintha-999/helachat/issues) or submit a pull request!
-
----
-
-<p align="center">
-  <img src="https://img.icons8.com/color/96/000000/chat--v1.png"/>
-  <br>
-  <b>Helachat — built for the future. Start the conversation TODAY.</b>
-</p>
-
----
-
-<p align="center">
-  <a href="https://github.com/Achintha-999/helachat">
-    <img src="https://img.shields.io/github/stars/Achintha-999/helachat?style=social" alt="GitHub stars">
-  </a>
-</p>
-  <a href="https://github.com/Achintha-999/react-native-messenger">
-    <img src="https://img.shields.io/github/stars/Achintha-999/react-native-messenger?style=social" alt="GitHub stars">
-  </a>
-</p>
+## Where to go next
+- If you want, I can:
+  - Inspect the client to auto-fill exact environment keys and commands
+  - Add example config file (src/config) and a small .env.example
+  - Create a PR that includes README and optional helper files
