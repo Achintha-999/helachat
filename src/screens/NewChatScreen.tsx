@@ -26,18 +26,20 @@ export default function NewChatScreen() {
     navigation.setOptions({
       title: "",
       headerLeft: () => (
-        <View className="items-center flex-row gap-x-2">
+        <View className="flex-row items-center gap-x-3">
           <TouchableOpacity
+            onPress={() => navigation.goBack()}
             className="justify-center items-center"
-            onPress={() => {
-              navigation.goBack();
-            }}
           >
             <Ionicons name="arrow-back-sharp" size={24} color="black" />
           </TouchableOpacity>
-          <View className="flex-col">
-            <Text className="text-lg font-bold">Select Contact</Text>
-            <Text className="text-sm font-bold">{users.length} contacts</Text>
+          <View>
+            <Text className="text-lg font-semibold text-gray-800">
+              Select Contact
+            </Text>
+            <Text className="text-sm text-gray-600">
+              {users.length} {users.length === 1 ? "contact" : "contacts"}
+            </Text>
           </View>
         </View>
       ),
@@ -100,38 +102,47 @@ export default function NewChatScreen() {
 
   return (
     <SafeAreaView
-      className="flex-1 bg-white"
+      className="flex-1 bg-gray-100"
       edges={["right", "bottom", "left"]}
     >
-      <StatusBar hidden={false} translucent={true} />
+      <StatusBar hidden={false} translucent={true} backgroundColor="#ffffff" />
+      <View className="flex-1 px-4">
+      <View className="flex-row items-center bg-white shadow-sm rounded-full px-4 h-12 mt-4">
+        <Ionicons name="search" size={20} color={"gray"} />
+        <TextInput
+        className="flex-1 text-base font-medium ps-2 text-gray-700"
+        placeholder="Search contacts"
+        placeholderTextColor="#9CA3AF"
+        value={search}
+        onChangeText={(text) => setSearch(text)}
+        />
+      </View>
+      <View className="my-4">
+        <TouchableOpacity
+        className="flex-row items-center bg-white shadow-sm rounded-lg p-3"
+        onPress={() => navigation.navigate("NewContactScreen")}
+        >
+        <View className="bg-blue-500 items-center justify-center w-10 h-10 rounded-full">
+          <Feather name="user-plus" size={20} color="white" />
+        </View>
+        <Text className="text-lg font-semibold text-gray-800 ml-4">
+          Add New Contact
+        </Text>
+        </TouchableOpacity>
+      </View>
       <View className="flex-1">
-        <View className="items-center flex-row mx-2 border-gray-300 border-2 rounded-full px-3 h-14 mt-3">
-          <Ionicons name="search" size={20} color={"gray"} />
-          <TextInput
-            className="flex-1 text-lg font-bold ps-2"
-            placeholder="Search"
-            value={search}
-            onChangeText={(text) => setSearch(text)}
-          />
-        </View>
-        <View className="px-2 my-2 border-b-2 border-b-green-500 py-2">
-          <TouchableOpacity
-            className="justify-start gap-x-3 flex-row items-center h-14"
-            onPress={() => navigation.navigate("NewContactScreen")}
-          >
-            <View className="bg-green-600 items-center justify-center w-12 h-12 rounded-full">
-              <Feather name="user-plus" size={24} color="black" />
-            </View>
-            <Text className="text-lg font-bold">New Contact</Text>
-          </TouchableOpacity>
-        </View>
-        <View className="mt-2">
-          <FlatList
-            data={filterdUsers}
-            renderItem={renderItem}
-            keyExtractor={(_, index) => index.toString()}
-          />
-        </View>
+        <FlatList
+        data={filterdUsers}
+        renderItem={renderItem}
+        keyExtractor={(_, index) => index.toString()}
+        contentContainerStyle={{
+          paddingBottom: 20,
+        }}
+        ItemSeparatorComponent={() => (
+          <View className="h-1 bg-gray-200 mx-2" />
+        )}
+        />
+      </View>
       </View>
     </SafeAreaView>
   );

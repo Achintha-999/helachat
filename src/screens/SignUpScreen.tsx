@@ -5,7 +5,9 @@ import {
   Pressable,
   StatusBar,
   Text,
+  TouchableOpacity,
   View,
+  StyleSheet,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import "../../global.css";
@@ -34,65 +36,86 @@ export default function SignUpScreen() {
       : require("../../assets/logo.png");
 
   const { userData, setUserData } = useUserRegistration();
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
 
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "android" ? "padding" : "height"}
       keyboardVerticalOffset={Platform.OS === "android" ? 100 : 100}
-      className="flex-1 items-center "
+      className={`flex-1 ${applied === "light" ? "bg-white" : "bg-gray-900"}`}
     >
-      <SafeAreaView className="justify-center items-center p-5">
+      <SafeAreaView className="flex-1 justify-center items-center px-5">
         <StatusBar hidden={true} />
-        <Image source={logo} className="h-40 w-36" />
-        <View className="w-full justify-start items-start">
-          <Text className="font-bold text-slate-500 ">
-            Create your account and start the conversation TODAY
-          </Text>
+        <Image
+            source={require("../../assets/logo.png")}
+            className="h-40 w-36"
+          />
+        <Text
+          className={`text-center text-lg font-semibold ${
+            applied === "light" ? "text-gray-700" : "text-gray-300"
+          }`}
+        >
+          Create your account and start connecting with the world!
+        </Text>
+        <View className="w-full mt-8">
+          <FloatingLabelInput
+            label={"First Name"}
+            value={userData.firstName}
+            onChangeText={(text) => {
+              setUserData((previous) => ({
+                ...previous,
+                firstName: text,
+              }));
+            }}
+            customLabelStyles={{
+              colorFocused: applied === "light" ? "#000" : "#fff",
+              colorBlurred: applied === "light" ? "#aaa" : "#ccc",
+            }}
+            inputStyles={{
+              color: applied === "light" ? "#000" : "#fff",
+            }}
+            containerStyles={{
+              borderBottomWidth: 1,
+              borderBottomColor: applied === "light" ? "#ccc" : "#555",
+              marginBottom: 20,
+            }}
+          />
+          <FloatingLabelInput
+            label={"Last Name"}
+            value={userData.lastName}
+            onChangeText={(text) => {
+              setUserData((previous) => ({
+                ...previous,
+                lastName: text,
+              }));
+            }}
+            customLabelStyles={{
+              colorFocused: applied === "light" ? "#000" : "#fff",
+              colorBlurred: applied === "light" ? "#aaa" : "#ccc",
+            }}
+            inputStyles={{
+              color: applied === "light" ? "#000" : "#fff",
+            }}
+            containerStyles={{
+              borderBottomWidth: 1,
+              borderBottomColor: applied === "light" ? "#ccc" : "#555",
+              marginBottom: 20,
+            }}
+          />
         </View>
-        <View className="self-stretch">
-          <View className="w-full my-3">
-            <FloatingLabelInput
-              label={"Enter Your First Name"}
-              value={userData.firstName}
-              onChangeText={(text) => {
-                setUserData((previous) => ({
-                  ...previous,
-                  firstName: text,
-                }));
-              }}
-            />
-          </View>
-          <View className="w-full my-3">
-            <FloatingLabelInput
-              label={"Enter Your Last Name"}
-              value={userData.lastName}
-              onChangeText={(text) => {
-                setUserData((previous) => ({
-                  ...previous,
-                  lastName: text,
-                }));
-              }}
-            />
-          </View>
-        </View>
-      </SafeAreaView>
-      <View className="mt-1 w-full px-5">
         <Pressable
-          className="bg-green-600 h-14 justify-center items-center rounded-full"
+          className={`h-14 w-full justify-center items-center rounded-full mt-5 ${
+            applied === "light" ? "bg-blue-600" : "bg-green-500"
+          }`}
           onPress={() => {
             let validFirstName = validateFirstName(userData.firstName);
             let validLastName = validateLastName(userData.lastName);
             if (validFirstName) {
-              // skip null
               Toast.show({
                 type: ALERT_TYPE.WARNING,
                 title: "Warning",
                 textBody: validFirstName,
               });
             } else if (validLastName) {
-              // skip null
               Toast.show({
                 type: ALERT_TYPE.WARNING,
                 title: "Warning",
@@ -103,9 +126,27 @@ export default function SignUpScreen() {
             }
           }}
         >
-          <Text className="text-slate-100  font-bold text-lg">Next</Text>
+          <Text className="text-white font-bold text-lg">Sign Up</Text>
         </Pressable>
-      </View>
+        <TouchableOpacity
+                style={styles.linkButton}
+                onPress={() => navigation.navigate("SignInScreen")}
+              >
+                <Text style={styles.linkText}>Already have an account? Sign In</Text>
+              </TouchableOpacity>
+      </SafeAreaView>
     </KeyboardAvoidingView>
   );
 }
+const styles = StyleSheet.create({
+
+  linkButton: {
+    marginTop: 20,
+  },
+  linkText: {
+    color: "#007BFF",
+    fontWeight: "bold",
+  },
+});
+
+

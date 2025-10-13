@@ -6,6 +6,7 @@ type AuthContextType = {
   isLoading: boolean;
   signUp: (id: string) => Promise<void>;
   signOut: () => Promise<void>;
+  setAuth: (id: string | null) => void;
 };
 export const AuthContext = createContext<AuthContextType | undefined>(
   undefined
@@ -23,11 +24,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         const storedId = await AsyncStorage.getItem(USER_ID_KEY);
         setUserId(storedId);
       } catch (error) {
-        console.warn("Error resotored userId", error);
+        console.warn("Error restoring userId", error);
       } finally {
-        setTimeout(() => {
-          setLoading(false);
-        }, 4000);
+        setLoading(false);
       }
     };
     loadUser();
@@ -43,9 +42,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     setUserId(null);
   };
 
-  // when calling this hook if dependencies are changed otherwise it get previous data
+  const setAuth = (id: string | null) => {
+    setUserId(id);
+  };
+
   const value = useMemo(
-    () => ({ userId, isLoading, signUp, signOut }),
+    () => ({ userId, isLoading, signUp, signOut, setAuth }),
     [userId, isLoading]
   );
 

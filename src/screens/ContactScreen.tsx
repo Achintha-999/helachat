@@ -47,99 +47,82 @@ export default function ContactScreen() {
         behavior={Platform.OS === "android" ? "padding" : "height"}
         keyboardVerticalOffset={Platform.OS === "android" ? 100 : 100}
       >
-        <View className="p-5 items-center flex-1">
-          <View>
+        <View className="p-6 items-center flex-1 bg-gray-50">
+          <View className="mb-8">
             <Image
               source={require("../../assets/logo.png")}
-              className="h-40 w-36"
+              className="h-32 w-32"
+              resizeMode="contain"
             />
           </View>
-          <View>
-            <Text className="text-slate-600 font-bold">
-              We use your contacts to help you find friends who are already on
-              the app. Your contacts stay private.
+          <View className="mb-6">
+            <Text className="text-gray-700 text-center text-lg font-medium">
+              Enter your phone number to get started. Your privacy is our priority.
             </Text>
           </View>
-          <View className="mt-5 w-full">
-            <View className="border-b-2 border-b-green-600 justify-center items-center flex-row h-14 mb-3">
+          <View className="w-full">
+            <View className="flex-row items-center border border-gray-300 rounded-lg px-4 py-2 mb-4 bg-white shadow-sm">
               <CountryPicker
-                countryCode={countryCode}
-                withFilter
-                withFlag
-                withCountryNameButton
-                withCallingCode
-                visible={show}
-                onClose={() => {
-                  setShow(false);
-                }}
-                onSelect={(c) => {
-                  setCountryCode(c.cca2);
-                  setCountry(c);
-                  setShow(false);
-                }}
+          countryCode={countryCode}
+          withFilter
+          withFlag
+          withCallingCode
+          visible={show}
+          onClose={() => setShow(false)}
+          onSelect={(c) => {
+            setCountryCode(c.cca2);
+            setCountry(c);
+            setShow(false);
+          }}
               />
-
               <AntDesign
-                name="caret-down"
-                size={18}
-                color="black"
-                style={{ marginTop: 5 }}
-              />
-            </View>
-            <View className="mt-2 flex flex-row justify-center">
-              <TextInput
-                inputMode="tel"
-                className="h-16 font-bold text-lg border-y-2 border-y-green-600 w-[18%]"
-                placeholder="+94"
-                editable={false}
-                value={country ? `+${country.callingCode}` : callingCode}
-                onChangeText={(text) => {
-                  setCallingCode(text);
-                }}
+          name="caret-down"
+          size={16}
+          color="gray"
+          style={{ marginLeft: 8 }}
               />
               <TextInput
-                inputMode="tel"
-                className="h-16 font-bold text-lg border-y-2 border-y-green-600 w-[80%] ml-2"
-                placeholder="77 #### ###"
-                value={phoneNo}
-                onChangeText={(text) => {
-                  setPhoneNo(text);
-                }}
+          inputMode="tel"
+          className="flex-1 ml-4 text-gray-800 text-base"
+          placeholder="Phone number"
+          value={phoneNo}
+          onChangeText={(text) => setPhoneNo(text)}
+          keyboardType="phone-pad"
               />
             </View>
           </View>
-          <View className="mt-16 w-full">
+          <View className="mt-8 w-full">
             <Pressable
-              className="justify-center items-center bg-green-600 w-full h-14 rounded-full"
+              className="justify-center items-center bg-green-500 w-full h-12 rounded-lg shadow-md"
               onPress={() => {
-                const validCountryCode = validateCountryCode(callingCode);
-                const validPhoneNo = validatePhoneNo(phoneNo);
+          const validCountryCode = validateCountryCode(callingCode);
+          const validPhoneNo = validatePhoneNo(phoneNo);
 
-                if (validCountryCode) {
-                  Toast.show({
-                    type: ALERT_TYPE.WARNING,
-                    title: "Warning",
-                    textBody: validCountryCode,
-                  });
-                } else if (validPhoneNo) {
-                  Toast.show({
-                    type: ALERT_TYPE.WARNING,
-                    title: "Warning",
-                    textBody: validPhoneNo,
-                  });
-                } else {
-                  setUserData((previous) => ({
-                    ...previous,
-                    countryCode: country
-                      ? `+${country.callingCode}`
-                      : callingCode,
-                    contactNo: phoneNo,
-                  }));
-                  navigation.replace("AvatarScreen");
-                }
+          if (validCountryCode) {
+            Toast.show({
+              type: ALERT_TYPE.WARNING,
+              title: "Warning",
+              textBody: validCountryCode,
+            });
+          } else if (validPhoneNo) {
+            Toast.show({
+              type: ALERT_TYPE.WARNING,
+              title: "Warning",
+              textBody: validPhoneNo,
+            });
+          } else {
+            setUserData((previous) => ({
+              ...previous,
+              countryCode: country
+                ? `+${country.callingCode}`
+                : callingCode,
+              contactNo: phoneNo,
+            }));
+            navigation.replace("AvatarScreen");
+          }
               }}
             >
-              <Text className="text-xl font-bold text-slate-50">Next</Text>
+              <Text className="text-lg font-semibold text-white">Next</Text>
             </Pressable>
           </View>
         </View>

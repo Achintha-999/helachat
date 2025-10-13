@@ -7,29 +7,34 @@ import Animated, {
 } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 import "../../global.css";
-import CircleShape from "../components/CircleShape";
+
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStack } from "../../App";
-import { runOnJS } from "react-native-worklets";
 import { useTheme } from "../../theme/ThemeProvider";
 import { useWebSocketPing } from "../socket/UseWebSocketPing";
 
 type Props = NativeStackNavigationProp<RootStack, "SplashScreen">;
+type SignInScreenProps = NativeStackNavigationProp<RootStack, "SignInScreen">;
 
 export default function SplashScreen() {
-  const navigation = useNavigation<Props>();
+  const navigation = useNavigation<Props | SignInScreenProps>();
   const opacity = useSharedValue(0);
-  useWebSocketPing(60000); // 1000 * 60 * 4
-  useEffect(() => {
-    opacity.value = withTiming(1, { duration: 3000 });
-    // const timer = setTimeout(() => {
-    //   navigation.replace("SignUpScreen");
-    // }, 3000);
+  useWebSocketPing(60000); 
 
-    // return () => {
-    //   clearTimeout(timer);
-    // };
+  useEffect(() => {
+ 
+    opacity.value = withTiming(1, { duration: 3000 });
+
+   
+    const timer = setTimeout(() => {
+      navigation.replace("SignInScreen");
+    }, 3000);
+
+   
+    return () => {
+      clearTimeout(timer);
+    };
   }, [navigation, opacity]);
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -43,38 +48,33 @@ export default function SplashScreen() {
       : require("../../assets/logo.png");
 
   return (
-    <SafeAreaView className="flex-1 justify-center items-center bg-slate-50 ">
+    <SafeAreaView className="flex-1 bg-white">
       <StatusBar hidden={true} />
-      <CircleShape
-        width={200}
-        height={200}
-        borderRadius={999}
-        className="bg-slate-900"
-        topValue={-50}
-        leftValue={-20}
-      />
-      <CircleShape
-        width={200}
-        height={200}
-        borderRadius={999}
-        className="bg-slate-900"
-        topValue={-20}
-        leftValue={90}
-      />
+      <View className="flex-1 justify-center items-center">
       <Animated.View style={animatedStyle}>
-        <Image source={logo} style={{ height: 200, width: 220 }} />
+      <Image
+            source={require("../../assets/logo.png")}
+            className="h-40 w-36"
+          />
       </Animated.View>
+      <Text className="mt-4 text-lg font-semibold text-gray-700">
+        Welcome to HelaChat
+      </Text>
+      <Text className="mt-2 text-sm text-gray-500">
+        Connecting the world, one chat at a time.
+      </Text>
+      </View>
 
-      <Animated.View className="absolute bottom-10" style={animatedStyle}>
-        <View className="justify-center items-center">
-          <Text className="text-xs font-bold text-slate-600 ">
-            POWERED BY: {process.env.EXPO_PUBLIC_APP_OWNER}
-          </Text>
-          <Text className="text-xs font-bold text-slate-600 ">
-            VERSION: {process.env.EXPO_PUBLIC_APP_VERSION}
-          </Text>
-        </View>
+      <View className="absolute bottom-10 w-full items-center">
+      <Animated.View style={animatedStyle}>
+        <Text className="text-xs font-medium text-gray-500">
+        Powered by {process.env.EXPO_PUBLIC_APP_OWNER}
+        </Text>
+        <Text className="text-xs font-medium text-gray-500">
+        Version {process.env.EXPO_PUBLIC_APP_VERSION}
+        </Text>
       </Animated.View>
+      </View>
     </SafeAreaView>
   );
 }

@@ -44,51 +44,47 @@ export default function ProfileScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 items-center justify-center bg-white">
+    <SafeAreaView className="flex-1 bg-gray-100">
       <View className="flex-1 mt-10 w-full p-5">
-        <View className="items-center ">
-          {image ? (
-            <Image
-              className="w-40 h-40 rounded-full border-gray-300 border-2"
-              source={{ uri: image }}
-            />
-          ) : (
-            <Image
-              className="w-40 h-40 rounded-full border-gray-300 border-2"
-              source={{ uri: userProfile?.profileImage }}
-            />
-          )}
+      <View className="items-center">
+        {image ? (
+        <Image
+          className="w-40 h-40 rounded-full border-gray-300 border-4 shadow-lg"
+          source={{ uri: image }}
+        />
+        ) : (
+        <Image
+          className="w-40 h-40 rounded-full border-gray-300 border-4 shadow-lg"
+          source={{ uri: userProfile?.profileImage }}
+        />
+        )}
+        <TouchableOpacity
+        className="mt-4 bg-green-600 px-4 py-2 rounded-full"
+        onPress={() => {
+          pickImage();
+        }}
+        >
+        <Text className="text-white font-bold text-lg">Edit Profile</Text>
+        </TouchableOpacity>
+      </View>
+      <View className="bg-white rounded-lg shadow-md p-4 mt-6">
+        <View className="flex-row items-center mb-4">
+        <Feather name="user" size={24} color="gray" />
+        <Text className="font-bold text-lg ml-3">Name</Text>
         </View>
-        <View className="my-1">
-          <TouchableOpacity
-            className="justify-center items-center h-12"
-            onPress={() => {
-              pickImage();
-            }}
-          >
-            <Text className="font-bold text-green-600 text-lg">
-              Edit Profile
-            </Text>
-          </TouchableOpacity>
+        <Text className="text-gray-700 text-lg">
+        {userProfile?.firstName} {userProfile?.lastName}
+        </Text>
+      </View>
+      <View className="bg-white rounded-lg shadow-md p-4 mt-4">
+        <View className="flex-row items-center mb-4">
+        <Feather name="phone" size={24} color="gray" />
+        <Text className="font-bold text-lg ml-3">Phone</Text>
         </View>
-        <View className="justify-start flex-col gap-y-2 my-3">
-          <View className="flex-row gap-x-3 items-center">
-            <Feather name="user" size={24} color="black" />
-            <Text className="font-bold text-lg">Name</Text>
-          </View>
-          <Text className="font-bold text-lg">
-            {userProfile?.firstName} {userProfile?.lastName}
-          </Text>
-        </View>
-        <View className="justify-start flex-col gap-y-2 my-3">
-          <View className="flex-row gap-x-3 items-center">
-            <Feather name="phone" size={24} color="black" />
-            <Text className="font-bold text-lg">Phone</Text>
-          </View>
-          <Text className="font-bold text-lg">
-            {userProfile?.countryCode} {userProfile?.contactNo}
-          </Text>
-        </View>
+        <Text className="text-gray-700 text-lg">
+        {userProfile?.countryCode} {userProfile?.contactNo}
+        </Text>
+      </View>
       </View>
     </SafeAreaView>
   );

@@ -44,6 +44,7 @@ export type RootStack = {
 
 const Stack = createNativeStackNavigator<RootStack>();
 
+
 function ChatApp() {
   const auth = useContext(AuthContext);
 
@@ -53,44 +54,43 @@ function ChatApp() {
         <UserRegistrationProvider>
           <NavigationContainer>
             <Stack.Navigator
-              initialRouteName="SplashScreen"
+              initialRouteName="SplashScreen" 
               screenOptions={{
                 animation: "fade",
               }}
             >
-              {auth?.isLoading ? (
-                <Stack.Screen
-                  name="SplashScreen"
-                  component={SplashScreen}
-                  options={{ headerShown: false }}
-                />
-              ) : auth?.userId === null ? (
-                // User not sign up
-                <Stack.Group>
-                  <Stack.Screen
-                    name="SignUpScreen"
-                    component={SignUpScreen}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="ContactScreen"
-                    component={ContactScreen}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="AvatarScreen"
-                    component={AvatarScreen}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="SignInScreen"
-                    component={SignInScreen}
-                    options={{ headerShown: false }}
-                  />
-                </Stack.Group>
-              ) : (
-                // When user sign up completed
-                <Stack.Group>
+             
+              <Stack.Screen
+                name="SplashScreen"
+                component={SplashScreen}
+                options={{ headerShown: false }}
+              />
+
+             
+              <Stack.Screen
+                name="SignInScreen"
+                component={SignInScreen}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="SignUpScreen"
+                component={SignUpScreen}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="ContactScreen"
+                component={ContactScreen}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="AvatarScreen"
+                component={AvatarScreen}
+                options={{ headerShown: false }}
+              />
+
+             
+              {auth?.userId !== null && (
+                <>
                   <Stack.Screen
                     name="HomeScreen"
                     component={HomeTabs}
@@ -120,7 +120,7 @@ function ChatApp() {
                     name="SignOutScreen"
                     component={SignOutScreen}
                   />
-                </Stack.Group>
+                </>
               )}
             </Stack.Navigator>
           </NavigationContainer>

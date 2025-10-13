@@ -32,7 +32,7 @@ export default function SingleChatScreen({
   navigation,
 }: SingleChatScreenProps) {
   const { chatId, friendName, lastSeenTime, profileImage } = route.params;
-  const singleChat = useSingleChat(chatId); // chatId == friendId
+  const singleChat = useSingleChat(chatId); 
   const messages = singleChat.messages;
   const friend = singleChat.friend;
   const sendMessage = useSendChat();
@@ -130,7 +130,7 @@ export default function SingleChatScreen({
         behavior={Platform.OS === "android" ? "padding" : "height"}
       >
         <FlatList
-          data={messages} //Chat[]
+          data={messages} 
           renderItem={renderItem}
           className="px-3 flex-1"
           inverted

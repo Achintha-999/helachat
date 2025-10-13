@@ -34,86 +34,73 @@ export default function HomeScreen() {
     navigation.setOptions({
       header: () => (
         <View
-          className={`h-20 bg-white justify-center items-center flex-row shadow-2xl elevation-2xl ${
+          className={`h-20 bg-white justify-center items-center flex-row shadow-md ${
             Platform.OS === "ios" ? `py-5` : `py-0`
           }`}
         >
-          <View className="flex-1 items-start ms-3">
-            <Text className="font-bold text-2xl">ChatApp</Text>
+          <View className="flex-1 items-start ms-4">
+            <Text className="font-bold text-2xl text-gray-800">HelaChat</Text>
           </View>
-          <View className="me-3">
-            <View className="flex-row space-x-4">
-              <TouchableOpacity className="me-5">
-                <Ionicons name="camera" size={26} color="black" />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => setModalVisible(true)}>
-                <Ionicons name="ellipsis-vertical" size={24} color="black" />
-              </TouchableOpacity>
-              <Modal
-                animationType="fade"
-                visible={isModalVisible}
-                transparent={true}
-                onRequestClose={() => setModalVisible(false)}
+          <View className="flex-row items-center me-4 space-x-4">
+            <TouchableOpacity>
+              <Ionicons name="camera-outline" size={26} color="gray" />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setModalVisible(true)}>
+              <Ionicons name="ellipsis-vertical-outline" size={26} color="gray" />
+            </TouchableOpacity>
+          </View>
+          <Modal
+            animationType="fade"
+            visible={isModalVisible}
+            transparent={true}
+            onRequestClose={() => setModalVisible(false)}
+          >
+            <Pressable
+              className="flex-1 bg-transparent"
+              onPress={() => setModalVisible(false)}
+            >
+              <Pressable
+          className="bg-white rounded-lg mx-4 my-auto"
+          style={{
+            shadowColor: "#000",
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.84,
+            elevation: 5,
+          }}
+          onPress={(e) => e.stopPropagation()}
               >
-                <Pressable
-                  className="flex-1 bg-transparent"
-                  onPress={() => {
-                    setModalVisible(false); // modal close when press outside
-                  }}
-                >
-                  <Pressable
-                    className="bg-red-100"
-                    onPress={(e) => {
-                      e.stopPropagation(); // prevent modal close inside of the modal
-                    }}
-                  >
-                    {/* root modal view */}
-                    <View className="justify-end items-end p-5">
-                      {/* content view */}
-
-                      <View
-                        className="bg-white rounded-md w-60 p-3"
-                        style={{
-                          shadowColor: "#000",
-                          shadowOffset: { width: 0, height: 2 },
-                          shadowOpacity: 0.25,
-                          shadowRadius: 3.84,
-                          elevation: 5,
-                        }}
-                      >
-                        <TouchableOpacity
-                          className="h-12 my-2 justify-center items-start border-b-2 border-b-gray-100"
-                          onPress={() => {
-                            navigation.navigate("SettingScreen");
-                            setModalVisible(false);
-                          }}
-                        >
-                          <Text className="font-bold text-lg">Settings</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          className="h-12 my-2 justify-center items-start border-b-2 border-b-gray-100"
-                          onPress={() => {
-                            navigation.navigate("ProfileScreen");
-                            setModalVisible(false);
-                          }}
-                        >
-                          <Text className="font-bold text-lg">My Profile</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          className="h-12 my-2 justify-center items-start border-b-2 border-b-gray-100"
-                          onPress={() => {
-                            if (auth) auth.signOut();
-                          }}
-                        >
-                          <Text className="font-bold text-lg">Log Out</Text>
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                  </Pressable>
-                </Pressable>
-              </Modal>
-            </View>
+          <View className="p-4">
+            <TouchableOpacity
+              className="h-12 justify-center border-b border-gray-200"
+              onPress={() => {
+                navigation.navigate("SettingScreen");
+                setModalVisible(false);
+              }}
+            >
+              <Text className="font-medium text-lg text-gray-700">Settings</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              className="h-12 justify-center border-b border-gray-200"
+              onPress={() => {
+                navigation.navigate("ProfileScreen");
+                setModalVisible(false);
+              }}
+            >
+              <Text className="font-medium text-lg text-gray-700">My Profile</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              className="h-12 justify-center"
+              onPress={() => {
+                if (auth) auth.signOut();
+              }}
+            >
+              <Text className="font-medium text-lg text-red-500">Log Out</Text>
+            </TouchableOpacity>
           </View>
+              </Pressable>
+            </Pressable>
+          </Modal>
         </View>
       ),
     });
@@ -134,7 +121,7 @@ export default function HomeScreen() {
 
   const renderItem = ({ item }: { item: Chat }) => (
     <TouchableOpacity
-      className="flex-row items-center py-2 px-3 bg-gray-50 my-0.5"
+      className="flex-row items-center py-3 px-4 bg-white my-1 rounded-lg shadow-sm"
       onPress={() => {
         navigation.navigate("SingleChatScreen", {
           chatId: item.friendId,
@@ -149,11 +136,11 @@ export default function HomeScreen() {
         });
       }}
     >
-      <TouchableOpacity className="h-14 w-14 rounded-full border-1 border-gray-300 justify-center items-center">
+      <View className="h-16 w-16 rounded-full border border-gray-300 overflow-hidden">
         {item.profileImage ? (
           <Image
             source={{ uri: item.profileImage }}
-            className="h-14 w-14 rounded-full"
+            className="h-full w-full"
           />
         ) : (
           <Image
@@ -163,34 +150,34 @@ export default function HomeScreen() {
                 "+"
               )}&background=random`,
             }}
-            className="h-14 w-14 rounded-full"
+            className="h-full w-full"
           />
         )}
-      </TouchableOpacity>
-      <View className="flex-1 ms-3">
-        <View className="flex-row justify-between">
+      </View>
+      <View className="flex-1 ms-4">
+        <View className="flex-row justify-between items-center">
           <Text
-            className="font-bold text-xl text-gray-600"
+            className="font-semibold text-lg text-gray-800"
             numberOfLines={1}
             ellipsizeMode="tail"
           >
             {item.friendName}
           </Text>
-          <Text className="font-bold text-xs text-gray-500">
+          <Text className="text-sm text-gray-500">
             {formatChatTime(item.lastTimeStamp)}
           </Text>
         </View>
-        <View className="flex-row justify-between items-center">
+        <View className="flex-row justify-between items-center mt-1">
           <Text
-            className="text-gray-500 flex-1 text-base"
+            className="text-gray-600 flex-1 text-sm"
             numberOfLines={1}
             ellipsizeMode="tail"
           >
             {item.lastMessage}
           </Text>
           {item.unreadCount > 0 && (
-            <View className="bg-green-500 rounded-full px-2 py-2 ms-2">
-              <Text className="text-slate-50 text-xs font-bold">
+            <View className="bg-green-500 rounded-full px-2 py-1 ms-2">
+              <Text className="text-white text-xs font-bold">
                 {item.unreadCount}
               </Text>
             </View>
@@ -199,6 +186,7 @@ export default function HomeScreen() {
       </View>
     </TouchableOpacity>
   );
+  
 
   return (
     <SafeAreaView
@@ -222,7 +210,7 @@ export default function HomeScreen() {
           contentContainerStyle={{ paddingBottom: 80 }}
         />
       </View>
-      <View className="absolute bg-green-500 bottom-16 right-10 h-20 w-20 rounded-3xl">
+      <View className="absolute bg-blue-500 bottom-16 right-10 h-20 w-20 rounded-3xl">
         <TouchableOpacity
           className="h-20 w-20 rounded-3xl justify-center items-center"
           onPress={() => navigation.navigate("NewChatScreen")}

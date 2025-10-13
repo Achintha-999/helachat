@@ -7,12 +7,10 @@
             <file>file:/D:/React-Native/React%20Projects/HelaChat/HelaChatBackend/src/java/socket/ChatEndPoint.java</file>
             <file>file:/D:/React-Native/React%20Projects/HelaChat/HelaChatBackend/src/java/socket/ChatService.java</file>
             <file>file:/D:/React-Native/React%20Projects/HelaChat/HelaChatBackend/src/java/controller/UserController.java</file>
-            <file>file:/D:/React-Native/React%20Projects/HelaChat/HelaChatBackend/src/java/socket/ChatSummary.java</file>
-            <file>file:/D:/React-Native/React%20Projects/HelaChat/HelaChatBackend/src/java/entity/FriendList.java</file>
-            <file>file:/D:/React-Native/React%20Projects/HelaChat/HelaChatBackend/src/java/entity/Status.java</file>
             <file>file:/D:/React-Native/React%20Projects/HelaChat/HelaChatBackend/src/java/controller/ProfileController.java</file>
             <file>file:/D:/React-Native/React%20Projects/HelaChat/HelaChatBackend/src/java/entity/User.java</file>
             <file>file:/D:/React-Native/React%20Projects/HelaChat/HelaChatBackend/src/java/entity/Chat.java</file>
+            <file>file:/D:/React-Native/React%20Projects/HelaChat/HelaChatBackend/src/java/controller/UserSignIn.java</file>
             <file>file:/D:/React-Native/React%20Projects/HelaChat/HelaChatBackend/src/java/socket/ProfileService.java</file>
         </group>
     </open-files>

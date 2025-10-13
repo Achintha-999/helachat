@@ -67,52 +67,51 @@ export default function AvatarScreen() {
             className="h-40 w-36"
           />
         </View>
-        <View className="items-center">
-          <Text className="font-bold text-lg text-slate-700">
-            Choose a profile image
+        <View className="items-center px-4">
+          <Text className="font-bold text-xl text-gray-800">
+            Select Your Profile Image
           </Text>
-          <View className="items-center mt-2 h-72">
+          <View className="items-center mt-4 h-72">
             <Pressable
-              className="h-[120] w-[120] rounded-full bg-gray-100 justify-center items-center border-2 border-gray-400
-            border-dashed"
+              className="h-[120px] w-[120px] rounded-full bg-gray-200 justify-center items-center border-2 border-gray-400 border-dashed"
               onPress={pickImage}
             >
               {image ? (
-                <Image
-                  source={{ uri: image }}
-                  className="h-[120] w-[120] rounded-full"
-                />
+          <Image
+            source={{ uri: image }}
+            className="h-[120px] w-[120px] rounded-full"
+          />
               ) : (
-                <View className="items-center">
-                  <Text className="font-bold text-2xl text-slate-500">+</Text>
-                  <Text className="font-bold text-lg text-slate-500">
-                    Add Image
-                  </Text>
-                </View>
+          <View className="items-center">
+            <Text className="font-bold text-3xl text-gray-500">+</Text>
+            <Text className="font-medium text-base text-gray-500">
+              Upload Image
+            </Text>
+          </View>
               )}
             </Pressable>
-            <Text className="text-lg my-2 text-slate-700 font-bold">
-              Or select an avatar
+            <Text className="text-lg mt-4 text-gray-700 font-semibold">
+              Or Choose an Avatar
             </Text>
             <FlatList
               data={avatars}
               horizontal
               keyExtractor={(_, index) => index.toString()}
               renderItem={({ item }) => (
-                <TouchableOpacity
-                  onPress={() => {
-                    setImage(Image.resolveAssetSource(item).uri);
-                    setUserData((previous) => ({
-                      ...previous,
-                      profileImage: Image.resolveAssetSource(item).uri,
-                    }));
-                  }}
-                >
-                  <Image
-                    source={item}
-                    className="h-20 w-20 rounded-full mx-2 border-2 border-gray-200"
-                  />
-                </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              setImage(Image.resolveAssetSource(item).uri);
+              setUserData((previous) => ({
+                ...previous,
+                profileImage: Image.resolveAssetSource(item).uri,
+              }));
+            }}
+          >
+            <Image
+              source={item}
+              className="h-20 w-20 rounded-full mx-2 border-2 border-gray-300"
+            />
+          </TouchableOpacity>
               )}
               contentContainerStyle={{ paddingHorizontal: 10 }}
               showsHorizontalScrollIndicator={false}
@@ -120,52 +119,59 @@ export default function AvatarScreen() {
           </View>
         </View>
 
-        <View className="mt-2 w-full px-5">
+        <View className="mt-4 w-full px-6">
           <Pressable
-            disabled={loading ? true : false}
-            className="h-14 bg-green-600 items-center justify-center rounded-full"
+            disabled={loading}
+            className={`h-14 ${
+              loading ? "bg-blue-400" : "bg-blue-600"
+            } items-center justify-center rounded-full`}
             onPress={async () => {
               const validProfile = validateProfileImage(
-                userData.profileImage
-                  ? { uri: userData.profileImage, type: "", fileSize: 0 }
-                  : null
+          userData.profileImage
+            ? { uri: userData.profileImage, type: "", fileSize: 0 }
+            : null
               );
               if (validProfile) {
-                Toast.show({
-                  type: ALERT_TYPE.WARNING,
-                  title: "Warning",
-                  textBody: "Select a profile image or an avatar",
-                });
+          Toast.show({
+            type: ALERT_TYPE.WARNING,
+            title: "Warning",
+            textBody: "Please select a profile image or an avatar.",
+          });
               } else {
-                try {
-                  setLoading(true);
-                  const response = await createNewAccount(userData);
-                  if (response.status) {
-                    const id = response.userId;
-                    if (auth) {
-                      await auth.signUp(String(id));
-                      // navigation.replace("HomeScreen");
-                    }
-                  } else {
-                    Toast.show({
-                      type: ALERT_TYPE.WARNING,
-                      title: "Warning",
-                      textBody: response.message,
-                    });
-                  }
-                } catch (error) {
-                  console.log(error);
-                } finally {
-                  setLoading(false);
-                }
+          try {
+            setLoading(true);
+            const response = await createNewAccount(userData);
+            if (response.status) {
+              const id = response.userId;
+              if (auth) {
+                await auth.signUp(String(id));
+                navigation.replace("HomeScreen");
+              }
+            } else {
+              Toast.show({
+                type: ALERT_TYPE.DANGER,
+                title: "Error",
+                textBody: response.message,
+              });
+            }
+          } catch (error) {
+            console.error(error);
+            Toast.show({
+              type: ALERT_TYPE.DANGER,
+              title: "Error",
+              textBody: "An unexpected error occurred. Please try again.",
+            });
+          } finally {
+            setLoading(false);
+          }
               }
             }}
           >
             {loading ? (
-              <ActivityIndicator size={"large"} color={"blue"} />
+              <ActivityIndicator size={"large"} color={"white"} />
             ) : (
-              <Text className="font-bold text-lg text-slate-50">
-                Create Account
+              <Text className="font-bold text-lg text-white">
+          Create Account
               </Text>
             )}
           </Pressable>
