@@ -224,19 +224,7 @@ HelaChat/
 
 ---
 
-## Icons & assets
 
-To decorate the app and repo:
-- Place app icons under `assets/icons/`:
-  - icon-1024.png — 1024×1024 (primary)
-  - icon-512.png — 512×512
-  - icon-192.png — 192×192 (web fallback)
-- Update `app.json` → `"icon"` to point to `./assets/icons/icon-1024.png`.
-- Add a small `assets/logo.png` (used in this README) or remove the image reference if you don't want it.
-
-If you'd like, add the final PNGs and I can update `app.json` and commit them.
-
----
 
 ## Testing
 
@@ -280,4 +268,3 @@ Maintainer: Achintha-999 — https://github.com/Achintha-999
 
 ---
 
-If something in this README doesn't reflect the exact code layout or environment variables in your project, I can adapt it after inspecting files such as `app.json`, `src/config`, `package.json`, and any backend configuration. Paste or point me to specific files you want me to read/modify and I will produce the exact changes ready to commit.
