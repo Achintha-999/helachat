@@ -1,4 +1,8 @@
 # 🌐 HelaChat
+<p align="center">
+  <img width="220" src="assets/logo.png" alt="App Logo">
+</p>
+
 
 > A React Native-based messaging app with a modern UI — user registration, profile-image selection (upload or avatar picker), and theme customization. Built with Expo, NativeWind/Tailwind, React Navigation, and a Java (Servlet + Hibernate) backend. Work in progress.
 
