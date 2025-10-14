@@ -26,7 +26,6 @@ Table of contents
 - [Hibernate configuration example](#hibernate-configuration-example)
 - [Project structure (high-level)](#project-structure-high-level)
 - [How it works (overview)](#how-it-works-overview)
-- [Icons & assets](#icons--assets)
 - [Testing](#testing)
 - [Contributing](#contributing)
 - [Roadmap / Future enhancements](#roadmap--future-enhancements)
