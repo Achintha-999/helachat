@@ -300,8 +300,9 @@ Maintainer: Achintha-999 — https://github.com/Achintha-999
 
 ---
 
-If you'd like, I can:
+<!--If you'd like, I can:
 - add SVG/emoji icons inline for each section,
 - generate example screenshots with placeholders,
 - or create a GitHub Actions workflow for lint/test on PRs. Tell me which you'd prefer and I will update the README (or add new files) accordingly.
 ```
+-->
