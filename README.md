@@ -83,7 +83,7 @@ Key features:
 Languages in repo (approx.): TypeScript, Java, Other
 
 ---
-
+<!--
 ## 🖼️ Screenshots
 
 > Place screenshots in `assets/` and update paths below if you add them.
@@ -94,6 +94,7 @@ Languages in repo (approx.): TypeScript, Java, Other
 </p>
 
 ---
+-->
 
 ## ⚙️ Requirements
 
