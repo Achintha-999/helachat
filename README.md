@@ -1,10 +1,3 @@
-```markdown
-<!--
-  Enhanced README for HelaChat
-  - Decorative icons, improved layout, clearer quickstart & env examples
-  - Keep images referenced from /assets where available
--->
-
 <div align="center">
   <img width="180" src="assets/logo.png" alt="HelaChat Logo" />
   <h1 align="center">🌐 HelaChat</h1>
