@@ -98,7 +98,7 @@ Languages in repo: TypeScript, Java, Other
   <img src="./signinscreen.png" alt="Sign In Screen" width="220" title="Sign In"/>
   <img src="./signupscreen.png" alt="Sign Up Screen" width="220" title="Sign Up"/>
   <img src="./selectAvatarscreen.png" alt="Select Avatar" width="220" title="Select Avatar"/>
-  <img src="assets/frendlistscreen.png" alt="Friend List" width="220" title="Friend List"/>
+  <img src="./frendlistscreen.png" alt="Friend List" width="220" title="Friend List"/>
   <img src="assets/contactscreen.png" alt="Contacts" width="220" title="Contacts"/>
   <img src="assets/addnewcontactscreen.png" alt="Add New Contact" width="220" title="Add New Contact"/>
 
