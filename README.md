@@ -94,7 +94,7 @@ Languages in repo: TypeScript, Java, Other
 
 <div align="center" style="display:flex; flex-wrap:wrap; gap:16px;">
 
-  <img src="assets/splashscreen.png" alt="Splash Screen" width="220" title="Splash Screen"/>
+  <img src="./splashscreen.png" alt="Splash Screen" width="220" title="Splash Screen"/>
   <img src="assets/signinscreen.png" alt="Sign In Screen" width="220" title="Sign In"/>
   <img src="assets/signupscreen.png" alt="Sign Up Screen" width="220" title="Sign Up"/>
   <img src="assets/selectAvatarscreen.png" alt="Select Avatar" width="220" title="Select Avatar"/>
