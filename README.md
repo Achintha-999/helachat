@@ -1,104 +1,287 @@
-# Helachat
+<!--
+  Enhanced README for HelaChat
+  - Decorative icons, improved layout, real screenshots section
+  - All images referenced from /assets as per your supplied list
+-->
 
-Helachat is a React Native chat application built with Expo and TypeScript. It provides a mobile client for real-time chat using a socket-based backend. This repository contains the Expo app (client) and the source organized under src/ including screens, components, API helpers and socket code.
+<div align="center">
+  <img width="180" src="assets/logo.png" alt="HelaChat Logo" />
+  <h1 align="center">🌐 HelaChat</h1>
+  <p align="center">
+    <b>A modern mobile-first messaging app built with Expo (React Native) and a Java + Hibernate backend.</b>
+  </p>
 
-## Table of contents
-- Project overview
-- Features
-- Tech stack
-- Requirements
-- Architecture & How it works
-- Getting started (local development)
-- Configuration
-- Running the app
-- Usage examples
-- Development workflow
-- Contributing
-- License
+  <!-- Badges -->
+  <p align="center">
+    <a href="https://github.com/Achintha-999/helachat">
+      <img alt="Repo Size" src="https://img.shields.io/github/repo-size/Achintha-999/helachat?color=blue" />
+    </a>
+    <a href="https://github.com/Achintha-999/helachat/commits/main">
+      <img alt="Last Commit" src="https://img.shields.io/github/last-commit/Achintha-999/helachat?color=orange" />
+    </a>
+    <a href="https://github.com/Achintha-999/helachat">
+      <img alt="Top Language" src="https://img.shields.io/github/languages/top/Achintha-999/helachat?color=yellow" />
+    </a>
+    <a href="https://github.com/Achintha-999/helachat/blob/main/LICENSE">
+      <img alt="License" src="https://img.shields.io/github/license/Achintha-999/helachat?color=lightgrey" />
+    </a>
+  </p>
+</div>
 
-## Project overview
-Helachat is a lightweight mobile chat client built with Expo and React Native (TypeScript). It connects to a socket-based backend (not included in this repository unless you have a separate server) to exchange messages in real time. The app includes screens for authentication, chat lists, and chat rooms, and utilities for managing API calls and socket connections.
+---
 
-## Features
-- Real-time messaging via sockets (client-side socket code in src/socket)
-- Screens and components scaffolded under src/screens and src/components
-- Async storage helpers for local persistence
-- Navigation using React Navigation
+## 🚀 Quick links
 
-## Tech stack
-- Expo (React Native)
-- React Native + TypeScript
-- React Navigation
-- @react-native-async-storage/async-storage
-- Socket client implementation (see src/socket)
+- 💻 Repo: https://github.com/Achintha-999/helachat
+- 👤 Maintainer: [Achintha-999](https://github.com/Achintha-999)
+- 📬 Contact: Open an issue or PR on GitHub
 
-## Requirements
-- Node.js 16+ (recommended)
-- npm or yarn
-- Expo CLI (optional but recommended): npm install -g expo-cli
-- A running chat server endpoint (WebSocket / Socket.IO or equivalent) for real-time messaging
+---
 
-## Architecture & How it works
-1. The Expo app (client) provides UI screens and uses a socket client to connect to a chat server.
-2. On startup, the app initializes navigation and socket connection logic (src/socket).
-3. The user authenticates (if the server requires it) and the client stores the token locally using AsyncStorage.
-4. When entering a chat room, the client joins a socket room and emits/receives message events. Messages may also be fetched/sent via REST endpoints defined in src/api.
-5. The UI listens for incoming socket events and updates the chat message list in real time.
+## 📚 Table of contents
 
-## Getting started (local development)
-1. Clone the repo:
+- [About](#about)
+- [Status & Features](#status--features)
+- [Tech stack](#tech-stack)
+- [📸 Screenshots](#screenshots)
+- [Requirements](#requirements)
+- [Quickstart](#quickstart)
+  - [Frontend (Expo) — run locally](#frontend-expo---run-locally)
+  - [Backend (Java + Hibernate) — run locally](#backend-java--hibernate---run-locally)
+- [Configuration / Environment](#configuration--environment)
+- [Ngrok — exposing backend for mobile testing](#ngrok---exposing-backend-for-mobile-testing)
+- [Hibernate configuration example](#hibernate-configuration-example)
+- [Project structure (high-level)](#project-structure-high-level)
+- [How it works (overview)](#how-it-works-overview)
+- [Testing](#testing)
+- [Contributing](#contributing)
+- [Roadmap / Future enhancements](#roadmap--future-enhancements)
+- [License & contact](#license--contact)
+
+---
+
+## 📝 About
+
+HelaChat is a mobile-first, real-time messaging client (React Native + Expo) that connects to a Java servlet/Hibernate backend for user management, message persistence and real-time events. The aim is a polished UI with lightweight, extensible architecture for chat features.
+
+---
+
+## 🔥 Status & Features
+
+🌱 <b>Current status:</b> <i>In development</i>
+
+**Key features:**
+- 👤 User registration & authentication
+- 🖼️ Profile image selection (upload or avatar picker)
+- 🎨 Theme customization (light/dark)
+- 💬 Conversations list and single-chat UI
+- 🔄 Real-time messaging via WebSocket / socket server
+- 🗄️ Message persistence (relational DB via Hibernate)
+
+---
+
+## 🛠 Tech stack
+
+- **Frontend:** Expo / React Native, TypeScript, React Navigation, NativeWind (Tailwind), AsyncStorage
+- **Backend:** Java Servlets, Hibernate ORM (MySQL/Postgres), WebSocket
+- **Dev tooling:** Ngrok (optional), Expo CLI, Maven/Gradle (backend builds)
+
+Languages in repo: TypeScript, Java, Other
+
+---
+
+## 📸 Screenshots
+
+<div align="center" style="display:flex; flex-wrap:wrap; gap:16px;">
+
+  <img src="./splashscreen.png" alt="Splash Screen" width="220" title="Splash Screen"/>
+  <img src="./signinscreen.png" alt="Sign In Screen" width="220" title="Sign In"/>
+  <img src="./signupscreen.png" alt="Sign Up Screen" width="220" title="Sign Up"/>
+  <img src="./selectAvatarscreen.png" alt="Select Avatar" width="220" title="Select Avatar"/>
+  <img src="./frendlistscreen.png" alt="Friend List" width="220" title="Friend List"/>
+  <img src="./contactscreen.png" alt="Contacts" width="220" title="Contacts"/>
+  <img src="./addnewcontactscreen.png" alt="Add New Contact" width="220" title="Add New Contact"/>
+
+</div>
+
+---
+
+## ⚙️ Requirements
+
+- 🟩 Node.js (v14+), npm/yarn
+- 📱 Expo CLI: `npm i -g expo-cli`
+- ☕ Java JDK 8+ (backend)
+- 🏗️ Tomcat / GlassFish (or any Servlet container) or embedded runner
+- 🗄️ MySQL or PostgreSQL (database)
+- 🌍 Ngrok (optional — for remote device testing)
+
+---
+
+## ⚡ Quickstart
+
+A short path to get you running locally.
+
+### 📲 Frontend (Expo) — run locally
+
+1. Clone and install:
+   ```bash
    git clone https://github.com/Achintha-999/helachat.git
    cd helachat
-
-2. Install dependencies:
    npm install
    # or
    yarn install
+   ```
 
-3. If you use Expo CLI, run:
+2. Configure environment (see [Configuration / Environment](#configuration--environment)).
+
+3. Start Expo:
+   ```bash
    expo start
+   ```
+   - Scan the QR code with Expo Go on a physical device, or open the iOS/Android simulator.
+   - Set `EXPO_PUBLIC_API_URL` and `EXPO_PUBLIC_WS_URL` in your `.env` as needed.
 
-4. Open the project in Expo Go on your phone or an emulator. Use the QR code in the Metro bundler.
+---
 
-Note: The app expects a backend server for real-time functionality. Check src/config or src/api for where the API base URL or socket URL is defined and update it to point to your server.
+### 🖥️ Backend (Java + Hibernate) — run locally
 
-## Configuration
-- Look for a config file or variables that define API_URL / SOCKET_URL. If none exists, create a simple file (e.g., src/config/index.ts) exporting constants:
+1. Open the backend module in your IDE (IntelliJ / Eclipse).
+2. Ensure your DB (MySQL/Postgres) is running and create the schema/database `helachat`.
+3. Update `hibernate.cfg.xml` (see example below).
+4. Build and deploy the WAR to your Servlet container, or run with your preferred launcher.
+5. Verify REST endpoints, such as: http://localhost:8080/helachat/api/auth/register
 
-  export const API_URL = 'https://your-server.example.com';
-  export const SOCKET_URL = 'https://your-server.example.com';
+---
 
-- If the project uses environment variables, follow the pattern used in the codebase (eg. react-native-dotenv or .env files).
+## 🔐 Configuration / Environment
 
-## Running the app
-- Development:
-  expo start
+Frontend expects environment variables prefixed with `EXPO_PUBLIC_`.
 
-- Android emulator / iOS simulator:
-  Use Expo CLI to open in simulator or scan QR with Expo Go.
+Example `.env`:
+```text
+EXPO_PUBLIC_API_URL=http://localhost:8080/helachat/api
+EXPO_PUBLIC_WS_URL=ws://10.0.2.2:8080/helachat/ws
+EXPO_PUBLIC_APP_NAME=HelaChat
+EXPO_PUBLIC_ENV=development
+```
 
-## Usage examples
-- Connect socket (example):
-  const socket = initSocket(SOCKET_URL, token);
-  socket.emit('join-room', { roomId });
-  socket.on('message', (msg) => setMessages(prev => [...prev, msg]));
+---
 
-- Send message (example):
-  socket.emit('send-message', { roomId, text });
+## 🌐 Ngrok — exposing backend for mobile testing
 
-## Development workflow
-- Use branches named feature/<name> or fix/<name>
-- Run linting and type checks if configured
-- Commit with clear messages and open PRs for reviews
+1. Install ngrok:
+```bash
+npm install -g ngrok
+```
+2. Start it pointing to your backend server port:
+```bash
+ngrok http 8080
+```
+3. Use the public HTTPS URL printed by ngrok and set env variables:
+```text
+EXPO_PUBLIC_API_URL=https://1234abcd.ngrok.io/helachat/api
+EXPO_PUBLIC_WS_URL=wss://1234abcd.ngrok.io/helachat/ws
+```
 
-## Contributing
-- Fork the repository, create a branch, and open a PR with a description of changes.
+Restart Expo when you change env variables.
 
-## License
-Specify the project license (e.g., MIT) in LICENSE file.
+---
 
-## Where to go next
-- If you want, I can:
-  - Inspect the client to auto-fill exact environment keys and commands
-  - Add example config file (src/config) and a small .env.example
-  - Create a PR that includes README and optional helper files
+## 🧾 Hibernate configuration example
+
+Add to your backend's `hibernate.cfg.xml` (update values accordingly):
+
+```xml
+<?xml version='1.0' encoding='utf-8'?>
+<hibernate-configuration>
+  <session-factory>
+    <!-- Database connection settings -->
+    <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/helachat?serverTimezone=UTC</property>
+    <property name="hibernate.connection.username">your_username</property>
+    <property name="hibernate.connection.password">your_password</property>
+    <!-- SQL dialect -->
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
+    <!-- Show SQL for debugging -->
+    <property name="hibernate.show_sql">true</property>
+    <!-- Auto schema update (dev only) -->
+    <property name="hibernate.hbm2ddl.auto">update</property>
+    <!-- Mapped classes -->
+    <!-- <mapping class="com.yourcompany.helachat.model.User"/> -->
+  </session-factory>
+</hibernate-configuration>
+```
+
+> ⚠️ For production, use `validate` or manage schema migrations with Flyway/Liquibase — do **not** use `update` in production.
+
+---
+
+## 📁 Project structure (high-level)
+
+```
+HelaChat/
+├── App.tsx                # Expo entry point (frontend)
+├── assets/                # images, icons, splash, screenshots
+├── src/                   # frontend source (screens, components, api, socket)
+├── backend/               # (optional) Java servlet/Hibernate backend
+│   ├── src/
+│   └── hibernate.cfg.xml
+├── app.json               # Expo config
+├── package.json
+└── README.md
+```
+
+---
+
+## 🔎 How it works (overview)
+
+**Frontend:**
+- Expo app connects to backend REST API for auth and history.
+- For real-time messaging, the app establishes a WebSocket connection and listens for message events.
+- Local persistence uses AsyncStorage for caching user/session data.
+
+**Backend:**
+- Java servlets expose REST endpoints for authentication, user/profile management and message history.
+- A WebSocket server handles real-time message broadcasting and room management.
+- Hibernate maps entities (User, Chat, Message) to the relational DB.
+
+---
+
+## ✅ Testing
+
+- **Frontend:**  
+  - Unit: `npm run test` (if tests exist)  
+  - Lint: `npm run lint`
+- **Backend:**  
+  - Run JUnit or integration tests via Maven/Gradle
+
+---
+
+## 🤝 Contributing
+
+Thanks for wanting to contribute! Suggested workflow:
+1. Fork the repo
+2. Create a branch: `feature/<name>` or `fix/<issue>`
+3. Run lint & tests locally
+4. Open a Pull Request with a clear description, screenshots, and a test plan
+
+---
+
+## 📅 Roadmap / Future enhancements
+
+- 👥 Group chats
+- 🖼️ Media sharing (images, video)
+- 🔔 Push notifications
+- 📶 Improved offline support and message queueing
+- 🌓 Dark mode polish and theme persistence
+
+---
+
+## 📝 License & contact
+
+This project is open-source. See LICENSE for details (e.g., MIT).
+
+Maintainer: Achintha-999 — https://github.com/Achintha-999
+
+---
+```
